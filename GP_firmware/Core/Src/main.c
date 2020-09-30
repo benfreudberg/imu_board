@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -27,7 +28,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <math.h>
+#include "global_variables.h"
+#include "initialize.h"
+#include "primary_loop.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -69,7 +73,7 @@ void JumpToBootloader(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  BootLocation();
+//  BootLocation(); //doesn't work right
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -90,6 +94,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_SPI1_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
@@ -98,16 +103,14 @@ int main(void)
   MX_TIM4_Init();
   MX_TIM8_Init();
   /* USER CODE BEGIN 2 */
-  HAL_TIM_Base_Start_IT(&htim1);
-  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
-  HAL_TIMEx_PWMN_Start(&htim8, TIM_CHANNEL_2);
-  HAL_TIMEx_PWMN_Start(&htim8, TIM_CHANNEL_3);
+  Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    primary_loop();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -235,17 +238,17 @@ void JumpToBootloader(void) {
    *       For others, check family reference manual
    */
   //Remap by hand... {
-#if defined(STM32G4)
-  SYSCFG->MEMRMP = 0x01;
-#endif
-#if defined(STM32F4)
-  SYSCFG->MEMRMP = 0x01;
-#endif
-#if defined(STM32F0)
-  SYSCFG->CFGR1 = 0x01;
-#endif
-  //} ...or if you use HAL drivers
-  //__HAL_SYSCFG_REMAPMEMORY_SYSTEMFLASH(); //Call HAL macro to do this for you
+//#if defined(STM32G4)
+//  SYSCFG->MEMRMP = 0x01;
+//#endif
+//#if defined(STM32F4)
+//  SYSCFG->MEMRMP = 0x01;
+//#endif
+//#if defined(STM32F0)
+//  SYSCFG->CFGR1 = 0x01;
+//#endif
+//  //} ...or if you use HAL drivers
+  __HAL_SYSCFG_REMAPMEMORY_SYSTEMFLASH(); //Call HAL macro to do this for you
 
   /**
    * Step: Set jump memory location for system memory

@@ -30,4 +30,46 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>calibration</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/calibration</locationURI>
+		</link>
+		<link>
+			<name>fm25l16b</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/fm25l16b</locationURI>
+		</link>
+		<link>
+			<name>global</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/global</locationURI>
+		</link>
+		<link>
+			<name>icm20602</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/icm20602</locationURI>
+		</link>
+		<link>
+			<name>kalman_filter</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/kalman_filter</locationURI>
+		</link>
+		<link>
+			<name>math_functions</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/math_functions</locationURI>
+		</link>
+		<link>
+			<name>mmc5983ma</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/mmc5983ma</locationURI>
+		</link>
+		<link>
+			<name>spi_wrapper</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/spi_wrapper</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

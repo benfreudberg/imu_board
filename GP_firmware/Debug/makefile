@@ -8,6 +8,12 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include spi_wrapper/subdir.mk
+-include math_functions/subdir.mk
+-include kalman_filter/subdir.mk
+-include icm20602/subdir.mk
+-include global/subdir.mk
+-include fm25l16b/subdir.mk
 -include USB_Device/Target/subdir.mk
 -include USB_Device/App/subdir.mk
 -include Middlewares/ST/STM32_USB_Device_Library/Core/Src/subdir.mk
@@ -51,7 +57,7 @@ all: GP_firmware.elf secondary-outputs
 
 # Tool invocations
 GP_firmware.elf: $(OBJS) $(USER_OBJS) S:\sourcetree\imu_board\GP_firmware\STM32G431KBTX_FLASH.ld
-	arm-none-eabi-gcc -o "GP_firmware.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"S:\sourcetree\imu_board\GP_firmware\STM32G431KBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="GP_firmware.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "GP_firmware.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"S:\sourcetree\imu_board\GP_firmware\STM32G431KBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="GP_firmware.map" -Wl,--gc-sections -static -L"S:/sourcetree/imu_board/GP_firmware/../CMSIS_DSP/Lib/GCC" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

@@ -33,10 +33,17 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_tim_ex.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h \
- ../Core/Inc/spi.h ../Core/Inc/main.h ../Core/Inc/tim.h \
+ ../Core/Inc/dma.h ../Core/Inc/main.h ../Core/Inc/spi.h ../Core/Inc/tim.h \
  ../Core/Inc/usart.h ../USB_Device/App/usb_device.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
- ../USB_Device/Target/usbd_conf.h ../Core/Inc/gpio.h
+ ../USB_Device/Target/usbd_conf.h ../Core/Inc/gpio.h \
+ s:\sourcetree\imu_board\common_source_files\global\global_variables.h \
+ s:\sourcetree\imu_board\common_source_files\icm20602\hal_icm20602.h \
+ s:\sourcetree\imu_board\common_source_files\kalman_filter\ahrs.h \
+ s:\sourcetree\imu_board\cmsis_dsp\include\arm_math.h \
+ ../Drivers/CMSIS/Include/cmsis_compiler.h \
+ s:\sourcetree\imu_board\common_source_files\global\initialize.h \
+ s:\sourcetree\imu_board\common_source_files\global\primary_loop.h
 
 ../Core/Inc/main.h:
 
@@ -108,9 +115,11 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h:
 
-../Core/Inc/spi.h:
+../Core/Inc/dma.h:
 
 ../Core/Inc/main.h:
+
+../Core/Inc/spi.h:
 
 ../Core/Inc/tim.h:
 
@@ -123,3 +132,17 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../USB_Device/Target/usbd_conf.h:
 
 ../Core/Inc/gpio.h:
+
+s:\sourcetree\imu_board\common_source_files\global\global_variables.h:
+
+s:\sourcetree\imu_board\common_source_files\icm20602\hal_icm20602.h:
+
+s:\sourcetree\imu_board\common_source_files\kalman_filter\ahrs.h:
+
+s:\sourcetree\imu_board\cmsis_dsp\include\arm_math.h:
+
+../Drivers/CMSIS/Include/cmsis_compiler.h:
+
+s:\sourcetree\imu_board\common_source_files\global\initialize.h:
+
+s:\sourcetree\imu_board\common_source_files\global\primary_loop.h:

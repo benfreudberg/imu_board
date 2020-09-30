@@ -1,0 +1,17 @@
+various_functions.c:49:6:cal_gyro	32	static
+various_functions.c:197:6:cal_failed	8	static
+various_functions.c:209:6:gn_resids	32	static
+various_functions.c:218:6:gn_jacobian	32	static
+various_functions.c:227:6:gn_step	80	static
+various_functions.c:270:6:gn	56	static
+various_functions.c:286:6:quatProd	48	static
+various_functions.c:297:6:quatConj	16	static
+various_functions.c:304:7:vectMag	40	static
+various_functions.c:314:6:vectNormalize	24	static
+various_functions.c:321:6:vectCross	40	static
+various_functions.c:331:7:vectDot	32	static
+various_functions.c:339:7:acos_nv	48	static
+various_functions.c:356:7:asin_nv	48	static
+various_functions.c:372:6:rel_rot	40	static
+various_functions.c:378:9:check_rot	40	static
+various_functions.c:387:6:sin_cos	24	static

@@ -66,18 +66,18 @@ void Error_Handler(void);
 #define BTN2_GPIO_Port GPIOA
 #define BTN0_Pin GPIO_PIN_4
 #define BTN0_GPIO_Port GPIOA
-#define CS_ICM_Pin GPIO_PIN_0
-#define CS_ICM_GPIO_Port GPIOB
-#define CS_FRAM_Pin GPIO_PIN_8
-#define CS_FRAM_GPIO_Port GPIOA
+#define CS_ICM0_Pin GPIO_PIN_0
+#define CS_ICM0_GPIO_Port GPIOB
+#define CS_FRAM0_Pin GPIO_PIN_8
+#define CS_FRAM0_GPIO_Port GPIOA
 #define T8_2N_LED0_Pin GPIO_PIN_4
 #define T8_2N_LED0_GPIO_Port GPIOB
 #define T8_3N_LED1_Pin GPIO_PIN_5
 #define T8_3N_LED1_GPIO_Port GPIOB
 #define T4_1_LED2_Pin GPIO_PIN_6
 #define T4_1_LED2_GPIO_Port GPIOB
-#define CS_MMC_Pin GPIO_PIN_7
-#define CS_MMC_GPIO_Port GPIOB
+#define CS_MMC0_Pin GPIO_PIN_7
+#define CS_MMC0_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

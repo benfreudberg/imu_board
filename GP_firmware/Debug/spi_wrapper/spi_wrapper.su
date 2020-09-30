@@ -1,0 +1,2 @@
+spi_wrapper.c:12:6:HAL_SPI_TxRxCpltCallback	16	static
+spi_wrapper.c:21:6:SPI_TransmitReceive_DMA_Blocking	32	static

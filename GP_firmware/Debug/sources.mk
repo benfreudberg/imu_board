@@ -26,4 +26,10 @@ Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src \
 Middlewares/ST/STM32_USB_Device_Library/Core/Src \
 USB_Device/App \
 USB_Device/Target \
+fm25l16b \
+global \
+icm20602 \
+kalman_filter \
+math_functions \
+spi_wrapper \
 
