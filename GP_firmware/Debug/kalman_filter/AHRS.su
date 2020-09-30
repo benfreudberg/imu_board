@@ -1,4 +1,0 @@
-AHRS.c:13:6:accStep	168	static
-AHRS.c:49:6:magStep	176	static
-AHRS.c:90:6:KalmanFilter_init	40	static
-AHRS.c:104:6:KalmanFilter_step	600	static

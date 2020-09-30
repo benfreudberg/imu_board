@@ -1,2 +1,0 @@
-primary_loop.c:13:6:HAL_TIM_PeriodElapsedCallback	16	static
-primary_loop.c:19:6:primary_loop	40	static

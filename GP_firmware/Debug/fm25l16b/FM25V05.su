@@ -1,9 +1,0 @@
-FM25V05.c:14:13:FM_WriteEnable	24	static
-FM25V05.c:21:13:FM_WriteDisable	24	static
-FM25V05.c:29:6:FM_ReadData	560	static
-FM25V05.c:44:6:FM_WriteData	296	static
-FM25V05.c:61:6:FM_WriteSR	24	static
-FM25V05.c:76:9:FM_ReadSR	32	static
-FM25V05.c:89:6:FM_GoToSleep	24	static
-FM25V05.c:96:6:FM_ReadID	48	static
-FM25V05.c:109:6:FM_ClearData	48	dynamic

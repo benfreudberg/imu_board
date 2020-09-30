@@ -1,4 +1,0 @@
-hal_ICM20602.c:12:19:ICM20602_Init	64	static
-hal_ICM20602.c:99:13:imu_reading_to_data	24	static
-hal_ICM20602.c:106:13:imu_int_to_norm_float	48	static
-hal_ICM20602.c:123:6:ICM20602_Read	64	static
