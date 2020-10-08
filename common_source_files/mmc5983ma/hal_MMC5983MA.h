@@ -1,5 +1,5 @@
 /*
- *  hal_MMC5883MA.h
+ *  hal_MMC5983MA.h
  *
  *  Created on: April 25, 2018
  *      Author: Ben Freudberg
@@ -43,7 +43,6 @@ typedef struct  {
 } MMC5983MA;
 
 HAL_StatusTypeDef MMC5983MA_Init(MMC5983MA* MMC, float beta[6]);
-//void mag_reading_to_data(int16_t* data_out, uint8_t* reading);
 void MMC5983MA_Start(MMC5983MA * MMC);
 void MMC5983MA_Read(MMC5983MA * MMC, float MMC_floats[3]);
 

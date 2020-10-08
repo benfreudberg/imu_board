@@ -1,5 +1,5 @@
 /*
- *  hal_MMC5883MA.c
+ *  hal_MMC5983MA.c
  *
  *  Created on: April 25, 2018
  *      Author: Ben Freudberg

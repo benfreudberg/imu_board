@@ -84,7 +84,6 @@ typedef struct  {
 //} ICM20602_Result;
 
 HAL_StatusTypeDef ICM20602_Init(ICM20602* ICM, float abeta[6], float gbeta[3]);
-//void imu_reading_to_data(int16_t* data_out, uint8_t* reading);
 void ICM20602_Read(ICM20602* ICM, float IMU_floats[7]);
 
 #endif
