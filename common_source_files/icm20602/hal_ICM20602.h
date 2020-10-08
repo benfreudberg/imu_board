@@ -7,6 +7,7 @@
 #ifndef hal_ICM20602_h
 #define hal_ICM20602_h
 
+#include "spi_control.h"
 #include "stm32g4xx_hal.h"
 #include "stm32g4xx_hal_spi.h"
 
@@ -21,8 +22,6 @@
 #define I2CEnable_Reg   112
 #define WhoAmI_Reg      117
 
-//spi control
-#define SPIReadMask     128
 
 //device parameters
 //#define Config_Setting          0 //more research required
@@ -84,7 +83,7 @@ typedef struct  {
 //    ICM20602_Result_Error,              /*!< Unknown error */
 //} ICM20602_Result;
 
-HAL_StatusTypeDef ICM20602_Init(ICM20602* ICM, float* abeta, float* gbeta);
+HAL_StatusTypeDef ICM20602_Init(ICM20602* ICM, float abeta[6], float gbeta[3]);
 //void imu_reading_to_data(int16_t* data_out, uint8_t* reading);
 void ICM20602_Read(ICM20602* ICM, float IMU_floats[7]);
 

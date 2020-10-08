@@ -17,10 +17,18 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 }
 
 void primary_loop(void) {
+  static bool mmc_data = false;
   if (tim1_int) {
     tim1_int = false;
     float IMU_floats[7];
+    float MMC_floats[3];
     ICM20602_Read(&ICM0, IMU_floats);
+    if (mmc_data) {
+      MMC5983MA_Read(&MMC0, MMC_floats);
+    } else {
+      MMC5983MA_Start(&MMC0);
+    }
+    mmc_data = !mmc_data;
     //todo: continue here
   }
 }

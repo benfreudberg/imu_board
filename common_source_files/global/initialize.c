@@ -30,10 +30,12 @@ void Init(void) {
 
 
   //mmc initialization
-//  MMC0.I2C_Bus = &hi2c1;
-//  MMC0.ODR = ODR600;
-//
-//  while (MMC5983MA_Init(&MMC0, mag0beta) != HAL_OK);
+  MMC0.SPI_Bus = &hspi1;
+  MMC0.CS_Port = CS_MMC0_GPIO_Port;
+  MMC0.CS_Pin = CS_MMC0_Pin;
+  MMC0.ODR = ODR800;
+
+  while (MMC5983MA_Init(&MMC0, mag0beta) != HAL_OK);
 
 
 

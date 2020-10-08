@@ -32,3 +32,17 @@ void SPI_TransmitReceive_DMA_Blocking(SPI_HandleTypeDef *hspi,
   HAL_SPI_TransmitReceive_DMA(hspi, pTxData, pRxData, Size);
   while(*SPI_busy);
 }
+
+void SPI_TransmitReceive_DMA_NonBlocking(SPI_HandleTypeDef *hspi,
+                                      uint8_t *pTxData,
+                                      uint8_t *pRxData,
+                                      uint16_t Size) {
+  volatile bool *SPI_busy;
+  if (hspi == &hspi1) {
+    SPI_busy = &SPI1_busy;
+  } else return;
+
+  while(*SPI_busy);
+  *SPI_busy = true;
+  HAL_SPI_TransmitReceive_DMA(hspi, pTxData, pRxData, Size);
+}

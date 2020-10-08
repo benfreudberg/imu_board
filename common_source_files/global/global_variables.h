@@ -6,13 +6,13 @@
  */
 
 #include "hal_ICM20602.h"
-//#include "hal_MMC5983MA.h"
+#include "hal_MMC5983MA.h"
 #include "ahrs.h"
 #include <stdbool.h>
 
 extern float dt;
 extern ICM20602 ICM0;
-//extern MMC5983MA MMC0;
+extern MMC5983MA MMC0;
 //extern int16_t IMU0_data[7];
 //extern int16_t MMC0_data[3];
 //extern float IMU0_floats[7];

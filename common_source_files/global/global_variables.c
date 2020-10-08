@@ -9,7 +9,7 @@
 
 float dt = 0.001;
 ICM20602 ICM0;
-//MMC5983MA MMC0;
+MMC5983MA MMC0;
 //int16_t IMU0_data[7];
 //int16_t MMC0_data[3];
 //float IMU0_floats[7];
