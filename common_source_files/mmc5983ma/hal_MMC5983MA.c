@@ -12,7 +12,7 @@
 
 static void mag_reading_to_data(int16_t data_out[3], uint8_t reading[6]) {
   for (int i = 0; i < 3; i++) {
-    uint16_t temporary_variable = (uint16_t) (reading[2*i]) << 8 | (reading[2*i + 1]);
+    uint16_t temporary_variable = (uint16_t) reading[2*i] << 8 | reading[2*i + 1];
     data_out[i] = (int16_t) (temporary_variable - 32768);
   }
 }
@@ -22,7 +22,7 @@ static void mag_int_to_norm_float(MMC5983MA* MMC, int16_t input[3], float output
   float temp[3];
   for (int i = 0; i < 3; i++) {
     // add offset, multiply by scale -> output normalized
-    temp[i] = (((float) (input[i])) - (beta[i])) * (beta[i + 3]);
+    temp[i] = ((float) (input[i]) - beta[i]) * beta[i + 3];
   }
   // fix axes to match imu
   output[0] =  temp[1];
