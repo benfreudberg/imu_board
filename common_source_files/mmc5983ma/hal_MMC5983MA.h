@@ -44,6 +44,6 @@ typedef struct  {
 
 HAL_StatusTypeDef MMC5983MA_Init(MMC5983MA* MMC, float beta[6]);
 void MMC5983MA_Start(MMC5983MA * MMC);
-void MMC5983MA_Read(MMC5983MA * MMC, float MMC_floats[3]);
+void MMC5983MA_Read(MMC5983MA * MMC, float MMC_floats[3], int16_t MMC_raw[3]);
 
 #endif

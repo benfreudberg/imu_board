@@ -58,14 +58,17 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define SWTCH0_Pin GPIO_PIN_0
-#define SWTCH0_GPIO_Port GPIOA
+#define JMPR0_Pin GPIO_PIN_0
+#define JMPR0_GPIO_Port GPIOA
 #define BTN1_Pin GPIO_PIN_1
 #define BTN1_GPIO_Port GPIOA
+#define BTN1_EXTI_IRQn EXTI1_IRQn
 #define BTN2_Pin GPIO_PIN_2
 #define BTN2_GPIO_Port GPIOA
+#define BTN2_EXTI_IRQn EXTI2_IRQn
 #define BTN0_Pin GPIO_PIN_4
 #define BTN0_GPIO_Port GPIOA
+#define BTN0_EXTI_IRQn EXTI4_IRQn
 #define CS_ICM0_Pin GPIO_PIN_0
 #define CS_ICM0_GPIO_Port GPIOB
 #define CS_FRAM0_Pin GPIO_PIN_8

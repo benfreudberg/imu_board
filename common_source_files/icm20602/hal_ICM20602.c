@@ -124,15 +124,14 @@ HAL_StatusTypeDef ICM20602_Init(ICM20602* ICM, float abeta[6], float gbeta[3]) {
 }
 
 
-void ICM20602_Read(ICM20602* ICM, float IMU_floats[7]) {
+void ICM20602_Read(ICM20602* ICM, float IMU_floats[7], int16_t IMU_raw[7]) {
   uint8_t aTxBuffer[15] = {0};
   uint8_t aRxBuffer[15] = {0};
-  int16_t IMU_data[7];
 
   aTxBuffer[0] = FirstData_Reg | SPIReadMask;
   HAL_GPIO_WritePin(ICM->CS_Port, ICM->CS_Pin, GPIO_PIN_RESET);
   SPI_TransmitReceive_DMA_Blocking(ICM->SPI_Bus, aTxBuffer, aRxBuffer, 15);
 
-  imu_reading_to_data(IMU_data, aRxBuffer + 1);
-  imu_int_to_norm_float(ICM, IMU_data, IMU_floats);
+  imu_reading_to_data(IMU_raw, aRxBuffer + 1);
+  imu_int_to_norm_float(ICM, IMU_raw, IMU_floats);
 }

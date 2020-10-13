@@ -11,6 +11,8 @@
 #include "stm32g4xx_hal.h"
 #include "stm32g4xx_hal_spi.h"
 
+extern const int GYROSENS[];
+
 //device registers
 #define Config_Reg      26
 #define GyroConfig_Reg  27
@@ -84,6 +86,6 @@ typedef struct  {
 //} ICM20602_Result;
 
 HAL_StatusTypeDef ICM20602_Init(ICM20602* ICM, float abeta[6], float gbeta[3]);
-void ICM20602_Read(ICM20602* ICM, float IMU_floats[7]);
+void ICM20602_Read(ICM20602* ICM, float IMU_floats[7], int16_t IMU_raw[7]);
 
 #endif

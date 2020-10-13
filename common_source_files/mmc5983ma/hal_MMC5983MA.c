@@ -102,15 +102,14 @@ void MMC5983MA_Start(MMC5983MA * MMC) {
   SPI_TransmitReceive_DMA_NonBlocking(MMC->SPI_Bus, aTxBuffer, aRxBuffer, 2);
 }
 
-void MMC5983MA_Read(MMC5983MA * MMC, float MMC_floats[3]) {
+void MMC5983MA_Read(MMC5983MA * MMC, float MMC_floats[3], int16_t MMC_raw[3]) {
   uint8_t aTxBuffer[7] = {0};
   uint8_t aRxBuffer[7] = {0};
-  int16_t MMC_data[3];
 
   aTxBuffer[0] = MMC_Data_Reg | SPIReadMask;
   HAL_GPIO_WritePin(MMC->CS_Port, MMC->CS_Pin, GPIO_PIN_RESET);
   SPI_TransmitReceive_DMA_Blocking(MMC->SPI_Bus, aTxBuffer, aRxBuffer, 7);
 
-  mag_reading_to_data(MMC_data, aRxBuffer + 1);
-  mag_int_to_norm_float(MMC, MMC_data, MMC_floats);
+  mag_reading_to_data(MMC_raw, aRxBuffer + 1);
+  mag_int_to_norm_float(MMC, MMC_raw, MMC_floats);
 }

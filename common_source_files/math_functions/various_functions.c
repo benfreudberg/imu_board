@@ -46,15 +46,15 @@ extern TIM_HandleTypeDef htim3;
 //  vectNormalize(output, 3);
 //}
 
-void cal_gyro(int16_t* data, ICM20602* ICM) {
-  float* beta = ICM->gyrobeta;
-  for (int j = 0; j < 3; j++) {
-    *(beta + j) = 0;
-    for (int i = 0; i < 20; i++) {
-      *(beta + j) += ((float) (*(data + i*3 + j))) / 32768 * 250 / 180 * PI   * 1/20;
-    }
-  }
-}
+//void cal_gyro(int16_t* data, ICM20602* ICM) {
+//  float* beta = ICM->gyrobeta;
+//  for (int j = 0; j < 3; j++) {
+//    *(beta + j) = 0;
+//    for (int i = 0; i < 20; i++) {
+//      *(beta + j) += ((float) (*(data + i*3 + j))) / 32768 * 250 / 180 * PI   * 1/20;
+//    }
+//  }
+//}
 
 //void cal_acc() {
 //  static uint8_t cal_state = 0;
@@ -206,32 +206,32 @@ void cal_failed() {
 //	HAL_TIM_Base_Stop_IT(&htim3);
 }
 
-void gn_resids(float32_t* resids, float32_t* data, float32_t* beta) {
+static void GaussNewton_Residuals(float32_t residuals[120], float32_t data[360], float32_t beta[6]) {
   for (int i = 0; i < 120; i++) {
-    *(resids + i) = 1;
+    residuals[i] = 1;
     for (int j = 0; j < 3; j++) {
-      *(resids + i) -= (*(beta+3+j)) * (*(beta+3+j)) * ((*(data+i*3+j)) - (*(beta+j))) * ((*(data+i*3+j)) - (*(beta+j)));
+      residuals[i] -= beta[3 + j] * beta[3 + j] * (data[i*3 + j] - beta[j]) * (data[i*3 + j] - beta[j]);
     }
   }
 }
 
-void gn_jacobian(float32_t* jacobian_data, float32_t* data, float32_t* beta) {
+static void GaussNewton_Jacobian(float32_t jacobian_data[360], float32_t data[360], float32_t beta[6]) {
   for (int i = 0; i < 120; i++) {
     for (int j = 0; j < 3; j++) {
-      *(jacobian_data + i*6 + j) = 2*(*(beta+3+j)) * (*(beta+3+j)) * ((*(data + i*3 + j)) - (*(beta+j)));
-      *(jacobian_data + i*6 + j+3) = -2*(*(beta+3+j)) * ((*(data + i*3 + j)) - (*(beta+j))) * ((*(data + i*3 + j)) - (*(beta+j)));
+      jacobian_data[i*6 + j] = 2*beta[3 + j] * beta[3+j] * (data[i*3 + j] - beta[j]);
+      jacobian_data[i*6 + j + 3] = -2*beta[3 + j] * (data[i*3 + j] - beta[j]) * (data[i*3 + j] - beta[j]);
     }
   }
 }
 
-void gn_step(float32_t* data, float32_t* beta) {
-  static float32_t resids[120];
-  gn_resids(resids, data, beta);
+static void GaussNewton_Step(float32_t data[360], float32_t beta[6]) {
+  static float32_t residuals[120];
+  GaussNewton_Residuals(residuals, data, beta);
   arm_matrix_instance_f32 R;
-  arm_mat_init_f32(&R, 120, 1, resids);
+  arm_mat_init_f32(&R, 120, 1, residuals);
   
   static float32_t J_f32[720];
-  gn_jacobian(J_f32, data, beta);
+  GaussNewton_Jacobian(J_f32, data, beta);
   arm_matrix_instance_f32 J;
   arm_mat_init_f32(&J, 120, 6, J_f32);
     
@@ -263,75 +263,75 @@ void gn_step(float32_t* data, float32_t* beta) {
   arm_mat_mult_f32(&JTJIJT, &R, &D);
   
   for (int i = 0; i < 6; i++) {
-    *(beta + i) -= *(D_f32 + i);
+    beta[i] -= D_f32[i];
   }
 }
 
-void gn(float32_t* data, float32_t* beta) {
+void GaussNewton(float32_t data[360], float32_t beta[6]) {
   float32_t change = 100;
   int step = 0;
   while (change > 0.00004 && step++ < 100) {
     float32_t old_beta[6];
     for (int i = 0; i < 6; i++) {
-      *(old_beta + i) = *(beta + i);
+      old_beta[i] = beta[i];
     }
-    gn_step(data, beta);
+    GaussNewton_Step(data, beta);
     change = 0;
     for (int i = 0; i < 6; i++) {
-      change += fabs((*(beta + i) - old_beta[i])/old_beta[i]);
+      change += fabs((beta[i] - old_beta[i])/old_beta[i]);
     }
   }
 }
 
-void quatProd(float* result, float* qa, float* qb) {
+void quatProd(float result[4], float qa[4], float qb[4]) {
   float temp[4];
-  temp[0] = (*(qa+0))*(*(qb+0)) - (*(qa+1))*(*(qb+1)) - (*(qa+2))*(*(qb+2)) - (*(qa+3))*(*(qb+3));
-  temp[1] = (*(qa+0))*(*(qb+1)) + (*(qa+1))*(*(qb+0)) + (*(qa+2))*(*(qb+3)) - (*(qa+3))*(*(qb+2));
-  temp[2] = (*(qa+0))*(*(qb+2)) - (*(qa+1))*(*(qb+3)) + (*(qa+2))*(*(qb+0)) + (*(qa+3))*(*(qb+1));
-  temp[3] = (*(qa+0))*(*(qb+3)) + (*(qa+1))*(*(qb+2)) - (*(qa+2))*(*(qb+1)) + (*(qa+3))*(*(qb+0));
+  temp[0] = qa[0]*qb[0] - qa[1]*qb[1] - qa[2]*qb[2] - qa[3]*qb[3];
+  temp[1] = qa[0]*qb[1] + qa[1]*qb[0] + qa[2]*qb[3] - qa[3]*qb[2];
+  temp[2] = qa[0]*qb[2] - qa[1]*qb[3] + qa[2]*qb[0] + qa[3]*qb[1];
+  temp[3] = qa[0]*qb[3] + qa[1]*qb[2] - qa[2]*qb[1] + qa[3]*qb[0];
   for (int i = 0; i<4; i++) {
-	  *(result+i) = temp[i];
+	  result[i] = temp[i];
   }
 }
 
-void quatConj(float* result, float* q) {
-  *(result+0) = *(q+0);
-  *(result+1) = -*(q+1);
-  *(result+2) = -*(q+2);
-  *(result+3) = -*(q+3);
+void quatConj(float result[4], float q[4]) {
+  result[0] = q[0];
+  result[1] = -q[1];
+  result[2] = -q[2];
+  result[3] = -q[3];
 }
 
-float vectMag(float* vec, int len) {
+float vectMag(float vec[], int len) {
   float sum_sqrs = 0;
   for (int i = 0; i < len; i++) {
-	  sum_sqrs += (*(vec+i))*(*(vec+i));
+	  sum_sqrs += vec[i]*vec[i];
   }
   float mag;
   arm_sqrt_f32(sum_sqrs, &mag);
   return mag;
 }
 
-void vectNormalize(float* vec, int len) {
+void vectNormalize(float vec[], int len) {
   float mag = vectMag(vec, len);
   for (int i = 0; i < len; i++) {
-    *(vec+i) = (*(vec+i))/mag;
+    vec[i] = vec[i]/mag;
   }
 }
 
-void vectCross(float* result, float* u, float* v) {
+void vectCross(float result[3], float u[3], float v[3]) {
   float temp[3];
-  temp[0] = (*(u+1))*(*(v+2)) - (*(u+2))*(*(v+1));
-  temp[1] = (*(u+2))*(*(v+0)) - (*(u+0))*(*(v+2));
-  temp[2] = (*(u+0))*(*(v+1)) - (*(u+1))*(*(v+0));
+  temp[0] = u[1]*v[2] - u[2]*v[1];
+  temp[1] = u[2]*v[0] - u[0]*v[2];
+  temp[2] = u[0]*v[1] - u[1]*v[0];
   for (int i = 0; i<3; i++) {
-  	  *(result+i) = temp[i];
+  	  result[i] = temp[i];
     }
 }
 
-float vectDot(float* u, float* v, int len) {
+float vectDot(float u[], float v[], int len) {
   float result = 0;
   for (int i = 0; i<len; i++) {
-    result += (*(u+i))*(*(v+i));
+    result += u[i]*v[i];
   }
   return result;
 }
@@ -369,13 +369,13 @@ float asin_nv(float x) {
   return ret - 2 * negate * ret;
 }
 
-void rel_rot(float* q_rel, float* qa, float* qb) {
+void rel_rot(float q_rel[4], float qa[4], float qb[4]) {
 	float qa_conj[4];
 	quatConj(qa_conj, qa);
 	quatProd(q_rel, qa_conj, qb);
 }
 
-uint8_t check_rot(float* qa, float* qb) {
+uint8_t check_rot(float qa[4], float qb[4]) {
 	uint8_t ret_val = 0;
 	float q_rel[4];
 	rel_rot(q_rel, qa, qb);
@@ -384,12 +384,12 @@ uint8_t check_rot(float* qa, float* qb) {
 	return ret_val;
 }
 
-void sin_cos(float32_t theta,float32_t * pSinVal,float32_t * pCosVal) {
+void sin_cos(float32_t theta, float32_t * pSinVal, float32_t * pCosVal) {
 	if (fabs(theta) < 0.0000001) {
 		*pSinVal = 0;
 		*pCosVal = 1;
 	}
-	else arm_sin_cos_f32(theta,pSinVal,pCosVal);
+	else arm_sin_cos_f32(theta, pSinVal, pCosVal);
 }
 
 
