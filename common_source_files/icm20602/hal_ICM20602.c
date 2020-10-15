@@ -17,15 +17,13 @@ static void imu_reading_to_data(int16_t data_out[7], uint8_t reading[14]) {
   }
 }
 
-// todo: don't normalize
-static void imu_int_to_norm_float(ICM20602* ICM, int16_t input[7], float output[7]) {
+static void imu_int_to_float(ICM20602* ICM, int16_t input[7], float output[7]) {
   float* beta_acc = ICM->accbeta;
   float* beta_gyro = ICM->gyrobeta;
   for (int i = 0; i < 3; i++) {
     // add offset, multiply by scale -> output in g's
     output[i] = ((float) input[i] - beta_acc[i]) * beta_acc[i + 3];
   }
-  vectNormalize(output, 3);
 
   output[3] = input[3] / 326.8 + 25; //degrees C
 
@@ -133,5 +131,5 @@ void ICM20602_Read(ICM20602* ICM, float IMU_floats[7], int16_t IMU_raw[7]) {
   SPI_TransmitReceive_DMA_Blocking(ICM->SPI_Bus, aTxBuffer, aRxBuffer, 15);
 
   imu_reading_to_data(IMU_raw, aRxBuffer + 1);
-  imu_int_to_norm_float(ICM, IMU_raw, IMU_floats);
+  imu_int_to_float(ICM, IMU_raw, IMU_floats);
 }

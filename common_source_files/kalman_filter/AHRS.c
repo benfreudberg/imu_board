@@ -5,17 +5,17 @@
  *      Author: Ben Freudberg
  */
 
+#include <ahrs.h>
 #include "various_functions.h"
 #include <math.h>
-#include "ahrs.h"
 #include <arm_math.h>
 
-void accStep(float* qa, float* q, float* acc) {
+void KalmanFilter_AccStep(float qa[4], float q[4], float acc[3]) {
   float gN[3] = {0, 0, 1};
   float ua = 0.9;
   float qg[4] = {0, 0, 0, 0};
   for (int i = 0; i < 3; i++) {
-    qg[i+1] = *(acc+i);
+    qg[i+1] = acc[i];
   }
 
   float qtemp[4];
@@ -27,10 +27,10 @@ void accStep(float* qa, float* q, float* acc) {
   vectNormalize(qgn, 4);
 
   float na[3];
-  vectCross(na,qgn+1,gN);
+  vectCross(na, qgn+1, gN);
   vectNormalize(na, 3);
 
-  float dot = vectDot(qgn+1,gN,3);
+  float dot = vectDot(qgn+1 ,gN, 3);
   if (dot > 1) dot = 1;
   if (dot < -1) dot = -1;
   float dtheta = acos_nv(dot);
@@ -46,11 +46,11 @@ void accStep(float* qa, float* q, float* acc) {
   vectNormalize(qa, 4);
 }
 
-void magStep(float* qa, float* mag) {
+void KalmanFilter_MagStep(float qa[4], float mag[3]) {
   float mN[3] = {.22892, .97345, 0};
   float qm[4] = {0, 0, 0, 0};
   for (int i = 0; i < 3; i++) {
-    qm[i+1] = *(mag+i);
+    qm[i+1] = mag[i];
   }
 
   float qtemp[4];
@@ -68,7 +68,7 @@ void magStep(float* qa, float* mag) {
   vmxy[1] = vmq[2]/sqrt_temp;
 
   float nm[3];
-  vectCross(nm,vmxy,mN);
+  vectCross(nm, vmxy, mN);
   vectNormalize(nm, 3);
 
   float dot = vectDot(vmxy,mN,3);
@@ -87,11 +87,11 @@ void magStep(float* qa, float* mag) {
   vectNormalize(qa, 4);
 }
 
-void KalmanFilter_init(KalmanFilter* KF, float* Q_init_vals, float* R_init_vals, float* P_post_init_vals, float dt) {
+void KalmanFilter_Init(KalmanFilter* KF, float Q_init_vals[16], float R_init_vals[16], float P_post_init_vals[16], float dt) {
 	for (int i = 0; i < 16; i++) {
-		KF->Q_vals[i] = *(Q_init_vals + i);
-		KF->R_vals[i] = *(R_init_vals + i);
-		KF->P_post_vals[i] = *(P_post_init_vals + i);
+		KF->Q_vals[i] = Q_init_vals[i];
+		KF->R_vals[i] = R_init_vals[i];
+		KF->P_post_vals[i] = P_post_init_vals[i];
 	}
 	KF->dt = dt;
 
@@ -101,7 +101,7 @@ void KalmanFilter_init(KalmanFilter* KF, float* Q_init_vals, float* R_init_vals,
 
 }
 
-void KalmanFilter_step(KalmanFilter* KF, float* qk, float* qak, float* gyro) {
+void KalmanFilter_Step(KalmanFilter* KF, float qk[4], float qak[4], float gyro[3]) {
 	float32_t q_pre[4];
 	arm_matrix_instance_f32 q_pre_vect;
 	arm_matrix_instance_f32 qk_vect;
@@ -114,12 +114,12 @@ void KalmanFilter_step(KalmanFilter* KF, float* qk, float* qak, float* gyro) {
 	float32_t K_vals[16];
 
 	F_vals[0] = F_vals[5] = F_vals[10] = F_vals[15] = 1;
-	F_vals[1] = F_vals[14] = -*(gyro + 0)*.5*(KF->dt); //-wx
-	F_vals[2] = F_vals[7] = -*(gyro + 1)*.5*(KF->dt); //-wy
-	F_vals[3] = F_vals[9] = -*(gyro + 2)*.5*(KF->dt); //-wz
-	F_vals[4] = F_vals[11] = *(gyro + 0)*.5*(KF->dt); //wx
-	F_vals[8] = F_vals[13] = *(gyro + 1)*.5*(KF->dt); //wy
-	F_vals[12] = F_vals[6] = *(gyro + 2)*.5*(KF->dt); //wz
+	F_vals[1] = F_vals[14] = -gyro[0]*.5*(KF->dt); //-wx
+	F_vals[2] = F_vals[7]  = -gyro[1]*.5*(KF->dt); //-wy
+	F_vals[3] = F_vals[9]  = -gyro[2]*.5*(KF->dt); //-wz
+	F_vals[4] = F_vals[11] =  gyro[0]*.5*(KF->dt); //wx
+	F_vals[8] = F_vals[13] =  gyro[1]*.5*(KF->dt); //wy
+	F_vals[12] = F_vals[6] =  gyro[2]*.5*(KF->dt); //wz
 	arm_mat_init_f32(&F, 4, 4, F_vals);
 
 	arm_mat_init_f32(&P_pre, 4, 4, P_pre_vals);
@@ -162,13 +162,11 @@ void KalmanFilter_step(KalmanFilter* KF, float* qk, float* qak, float* gyro) {
 
 	arm_matrix_instance_f32 Eye4;
 	float32_t eye4_vals[16] = {	1, 0, 0, 0,
-								0, 1, 0, 0,
-								0, 0, 1, 0,
-								0, 0, 0, 1 };
+                              0, 1, 0, 0,
+                              0, 0, 1, 0,
+                              0, 0, 0, 1 };
 	arm_mat_init_f32(&Eye4, 4, 4, eye4_vals);
 
 	arm_mat_sub_f32(&Eye4, &K, &Temp);
 	arm_mat_mult_f32(&Temp, &P_pre, &(KF->P_post)); //calc new P_post
-
-
 }

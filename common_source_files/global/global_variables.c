@@ -19,4 +19,5 @@ volatile uint8_t send_data_mag = 0;
 int16_t acc0data20[20][3];
 int16_t gyro0data20[20][3];
 int16_t mag0data20[20][3];
-KalmanFilter KF0;
+KalmanFilter kf0;
+float q0[4] = {1, 0, 0, 0};

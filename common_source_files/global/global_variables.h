@@ -5,9 +5,9 @@
  *      Author: Ben Freudberg
  */
 
+#include "ahrs.h"
 #include "hal_ICM20602.h"
 #include "hal_MMC5983MA.h"
-#include "ahrs.h"
 #include <stdbool.h>
 
 extern float dt;
@@ -22,5 +22,6 @@ extern volatile uint8_t send_data_mag;
 extern int16_t acc0data20[20][3];
 extern int16_t gyro0data20[20][3];
 extern int16_t mag0data20[20][3];
-extern KalmanFilter KF0;
+extern KalmanFilter kf0;
+extern float q0[4];
 

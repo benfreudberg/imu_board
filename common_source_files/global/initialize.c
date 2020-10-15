@@ -54,7 +54,7 @@ void Init(void) {
                  0, 0, 2, 0,
                  0, 0, 0, 2 };
 
-  KalmanFilter_init(&KF0, Q0_vals, R0_vals, P_post0_vals, dt);
+  KalmanFilter_Init(&kf0, Q0_vals, R0_vals, P_post0_vals, dt);
 
 
   //1 kHz interrupt timer initialization
