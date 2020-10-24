@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>GP_firmware</name>
+	<name>headtracker_firmware</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -34,52 +34,58 @@
 		<link>
 			<name>calibration</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/calibration</locationURI>
+			<locationURI>copy_PARENT/common_source_files/calibration</locationURI>
 		</link>
 		<link>
 			<name>fm25l16b</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/fm25l16b</locationURI>
+			<locationURI>copy_PARENT/common_source_files/fm25l16b</locationURI>
 		</link>
 		<link>
 			<name>global</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/global</locationURI>
+			<locationURI>copy_PARENT/common_source_files/global</locationURI>
 		</link>
 		<link>
 			<name>icm20602</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/icm20602</locationURI>
+			<locationURI>copy_PARENT/common_source_files/icm20602</locationURI>
 		</link>
 		<link>
 			<name>kalman_filter</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/kalman_filter</locationURI>
+			<locationURI>copy_PARENT/common_source_files/kalman_filter</locationURI>
 		</link>
 		<link>
 			<name>leds</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/leds</locationURI>
+			<locationURI>copy_PARENT/common_source_files/leds</locationURI>
 		</link>
 		<link>
 			<name>math_functions</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/math_functions</locationURI>
+			<locationURI>copy_PARENT/common_source_files/math_functions</locationURI>
 		</link>
 		<link>
 			<name>memory_storage</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/memory_storage</locationURI>
+			<locationURI>copy_PARENT/common_source_files/memory_storage</locationURI>
 		</link>
 		<link>
 			<name>mmc5983ma</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/mmc5983ma</locationURI>
+			<locationURI>copy_PARENT/common_source_files/mmc5983ma</locationURI>
 		</link>
 		<link>
 			<name>spi_wrapper</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/spi_wrapper</locationURI>
+			<locationURI>copy_PARENT/common_source_files/spi_wrapper</locationURI>
 		</link>
 	</linkedResources>
+	<variableList>
+		<variable>
+			<name>copy_PARENT</name>
+			<value>$%7BPARENT-3-ECLIPSE_HOME%7D/sourcetree/imu_board</value>
+		</variable>
+	</variableList>
 </projectDescription>

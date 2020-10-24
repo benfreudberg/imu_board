@@ -59,8 +59,6 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../common_source_files/mmc5983ma&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../CMSIS_DSP/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../common_source_files/spi_wrapper&quot;"/>
-									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core/Include/"/>
-									<listOptionValue builtIn="false" value="../Middlewares/Third_Party/ARM_CMSIS/CMSIS/Core_A/Include/"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../common_source_files/memory_storage&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../common_source_files/leds&quot;"/>
 								</option>
