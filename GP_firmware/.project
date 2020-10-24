@@ -57,9 +57,19 @@
 			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/kalman_filter</locationURI>
 		</link>
 		<link>
+			<name>leds</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/leds</locationURI>
+		</link>
+		<link>
 			<name>math_functions</name>
 			<type>2</type>
 			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/math_functions</locationURI>
+		</link>
+		<link>
+			<name>memory_storage</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/common_source_files/memory_storage</locationURI>
 		</link>
 		<link>
 			<name>mmc5983ma</name>

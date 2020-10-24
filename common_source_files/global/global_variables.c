@@ -10,10 +10,7 @@
 float dt = 0.001;
 ICM20602 ICM0;
 MMC5983MA MMC0;
-//int16_t IMU0_data[7];
-//int16_t MMC0_data[3];
-//float IMU0_floats[7];
-//float MMC0_floats[3];
+FM25L16B_t FM25;
 volatile uint8_t send_data_imu = 0;
 volatile uint8_t send_data_mag = 0;
 int16_t acc0data20[20][3];

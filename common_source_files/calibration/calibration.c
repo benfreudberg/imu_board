@@ -7,18 +7,17 @@
 
 #include "global_variables.h"
 #include "various_functions.h"
+#include "memory_storage_map.h"
+#include "leds.h"
 
 uint8_t cal_acc_state = 0;
 uint8_t cal_mag_state = 0;
 volatile bool collect_mag_data_b = false;
 
 static void cal_failed() {
-//  __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 5000);
-//  __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, 5000);
-//  __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3, 5000);
-//  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
-//  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
-//  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+  LED_SetPWM(&led0, 200, 127);
+  LED_SetPWM(&led1, 200, 127);
+  LED_SetPWM(&led2, 200, 127);
   while(1);
 }
 
@@ -45,6 +44,8 @@ static bool check_rot_since_last_data(float qa[4], float qb[4]) {
 void CAL_AccStep(void) {
   static int16_t dataset0[360];
 
+  LED_SetPWM(&led1, 1000, 0xff * (cal_acc_state + 1) / 6);
+
   for (int i = 0; i<20; i++) {
     for (int j = 0; j<3; j++) {
     dataset0[i*3+j+(cal_acc_state*60)] = acc0data20[i][j];
@@ -63,12 +64,7 @@ void CAL_AccStep(void) {
     if (!success) {
       cal_failed();
     } else {
-//    memcpy(VarDataTab+36, ICM0.gyrobeta, 12);
-//    HAL_FLASH_Unlock();
-//    for (int i = 36; i<54; i++) {
-//      EE_WriteVariable(VirtAddVarTab[i], VarDataTab[i]);
-//    }
-//    HAL_FLASH_Lock();
+      MEM_WriteGyro0CalData(ICM0.gyrobeta);
     }
   }
   if (cal_acc_state == 5) {
@@ -99,13 +95,9 @@ void CAL_AccStep(void) {
     if (!success) {
       cal_failed();
     } else {
-//    memcpy(VarDataTab+00, ICM0.accbeta, 24);
-//    HAL_FLASH_Unlock();
-//    for (int i = 0; i<36; i++) {
-//      EE_WriteVariable(VirtAddVarTab[i], VarDataTab[i]);
-//    }
-//    HAL_FLASH_Lock();
+      MEM_WriteAcc0CalData(ICM0.accbeta);
     }
+    LED_SetPWM(&led1, 1000, 0);
   }
 
   cal_acc_state++;
@@ -113,6 +105,7 @@ void CAL_AccStep(void) {
 }
 
 void CAL_MagStartStep(void) {
+  LED_SetPWM(&led2, 1000, 0xff * (cal_mag_state + 1) / 6);
   collect_mag_data_b = true;
 }
 
@@ -129,7 +122,6 @@ static void CAL_MagStep(void) {
       dataset0_f32[i] = ((float32_t) dataset0[i]);
     }
 
-//    HAL_TIM_PWM_Stop(&htim4, TIM_CHANNEL_4);
     GaussNewton(dataset0_f32, MMC0.beta);
 
     bool results_valid = true;
@@ -150,13 +142,9 @@ static void CAL_MagStep(void) {
     if (!results_valid) {
       cal_failed();
     } else {
-//    memcpy(VarDataTab+54, MMC0.beta, 24);
-//    HAL_FLASH_Unlock();
-//    for (int i = 54; i<78; i++) {
-//      EE_WriteVariable(VirtAddVarTab[i], VarDataTab[i]);
-//    }
-//    HAL_FLASH_Lock();
+      MEM_WriteMmc0CalData(MMC0.beta);
     }
+    LED_SetPWM(&led2, 1000, 0);
   }
 
   cal_mag_state++;
@@ -176,6 +164,8 @@ void CAL_Imu20BufferPush(int16_t IMU_raw[7]) {
 void CAL_Mag20BufferPush(int16_t MAG_raw[3]) {
   static uint8_t mag_count = 0;
   static float q_last[4] = {1, 0, 0, 0};
+  LED_SetPWM(&led2, 100, 127);
+
   bool save_mag_b = check_rot_since_last_data(q_last, q0);
   if (save_mag_b) {
     for (int i = 0; i<4; i++) {
@@ -193,7 +183,7 @@ void CAL_Mag20BufferPush(int16_t MAG_raw[3]) {
   if (mag_count == 20) {
     mag_count = 0;
     collect_mag_data_b = false;
-//    __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_4, 1000);
+    LED_SetPWM(&led2, 1000, 0xff * (cal_mag_state + 1) / 6);
     CAL_MagStep();
   }
 }

@@ -1,33 +1,33 @@
 /*
- * FM25V05.c
+ * FM25L16B.c
  *
  *  Created on: Jul 16, 2019
  *      Author: Ben Freudberg
  */
 
+#include <FM25L16B.h>
 #include "stdint.h"
-#include "FM25V05.h"
 #include "string.h"
 
 
 /*PRIVATE FUNCTIONS*/
-static void FM_WriteEnable(fm25v05_t* module) {
-	const uint8_t opcode = FM25V05_WREN;
+static void FM_WriteEnable(FM25L16B_t* module) {
+	const uint8_t opcode = FM25L16B_WREN;
 	HAL_GPIO_WritePin(module->cs_port, module->cs_pin, GPIO_PIN_RESET);
 	HAL_SPI_Transmit(module->SPI_Bus, (uint8_t*) &opcode, 1, 1);
 	HAL_GPIO_WritePin(module->cs_port, module->cs_pin, GPIO_PIN_SET);
 }
 
-static void FM_WriteDisable(fm25v05_t* module) {
-	const uint8_t opcode = FM25V05_WRDI;
+static void FM_WriteDisable(FM25L16B_t* module) {
+	const uint8_t opcode = FM25L16B_WRDI;
 	HAL_GPIO_WritePin(module->cs_port, module->cs_pin, GPIO_PIN_RESET);
 	HAL_SPI_Transmit(module->SPI_Bus, (uint8_t*) &opcode, 1, 1);
 	HAL_GPIO_WritePin(module->cs_port, module->cs_pin, GPIO_PIN_SET);
 }
 
 /*PUBLIC FUNCTIONS*/
-void FM_ReadData(fm25v05_t* module, uint16_t addr, uint8_t* rx_data, uint16_t num_bytes) {
-	const uint8_t opcode = FM25V05_READ;
+void FM_ReadData(FM25L16B_t* module, uint32_t addr, uint8_t* rx_data, uint16_t num_bytes) {
+	const uint8_t opcode = FM25L16B_READ;
 	uint8_t tx_data_temp[FM_MAX_BYTES + 3] = {0};
 	uint8_t rx_data_temp[FM_MAX_BYTES + 3] = {0};
 	tx_data_temp[0] = opcode;
@@ -41,8 +41,8 @@ void FM_ReadData(fm25v05_t* module, uint16_t addr, uint8_t* rx_data, uint16_t nu
 	memcpy(rx_data, &rx_data_temp[3], num_bytes);
 }
 
-void FM_WriteData(fm25v05_t* module, uint16_t addr, uint8_t* tx_data, uint16_t num_bytes) {
-	const uint8_t opcode = FM25V05_WRITE;
+void FM_WriteData(FM25L16B_t* module, uint32_t addr, uint8_t* tx_data, uint16_t num_bytes) {
+	const uint8_t opcode = FM25L16B_WRITE;
 	uint8_t tx_data_temp[FM_MAX_BYTES + 3] = {0};
 	tx_data_temp[0] = opcode;
 	tx_data_temp[1] = (addr >> 8) & 0xff;
@@ -58,8 +58,8 @@ void FM_WriteData(fm25v05_t* module, uint16_t addr, uint8_t* tx_data, uint16_t n
 	FM_WriteDisable(module);
 }
 
-void FM_WriteSR(fm25v05_t* module, uint8_t sr_data) {
-	const uint8_t opcode = FM25V05_WRSR;
+void FM_WriteSR(FM25L16B_t* module, uint8_t sr_data) {
+	const uint8_t opcode = FM25L16B_WRSR;
 	uint8_t tx_data_temp[2] = {0};
 	tx_data_temp[0] = opcode;
 	tx_data_temp[1] = sr_data;
@@ -73,8 +73,8 @@ void FM_WriteSR(fm25v05_t* module, uint8_t sr_data) {
 	FM_WriteDisable(module);
 }
 
-uint8_t FM_ReadSR(fm25v05_t* module) {
-	const uint8_t opcode = FM25V05_RDSR;
+uint8_t FM_ReadSR(FM25L16B_t* module) {
+	const uint8_t opcode = FM25L16B_RDSR;
 	uint8_t tx_data_temp[2] = {0};
 	uint8_t rx_data_temp[2] = {0};
 	tx_data_temp[0] = opcode;
@@ -86,28 +86,8 @@ uint8_t FM_ReadSR(fm25v05_t* module) {
 	return rx_data_temp[1];
 }
 
-void FM_GoToSleep(fm25v05_t* module) {
-	const uint8_t opcode = FM25V05_SLEEP;
-	HAL_GPIO_WritePin(module->cs_port, module->cs_pin, GPIO_PIN_RESET);
-	HAL_SPI_Transmit(module->SPI_Bus, (uint8_t*) &opcode, 1, 1);
-	HAL_GPIO_WritePin(module->cs_port, module->cs_pin, GPIO_PIN_SET);
-}
-
-void FM_ReadID(fm25v05_t* module, uint8_t* id_data) {
-	const uint8_t opcode = FM25V05_RDID;
-	uint8_t tx_data_temp[10] = {0};
-	uint8_t rx_data_temp[10] = {0};
-	tx_data_temp[0] = opcode;
-
-	HAL_GPIO_WritePin(module->cs_port, module->cs_pin, GPIO_PIN_RESET);
-	HAL_SPI_TransmitReceive(module->SPI_Bus, tx_data_temp, rx_data_temp, 10, 1);
-	HAL_GPIO_WritePin(module->cs_port, module->cs_pin, GPIO_PIN_SET);
-
-	memcpy(id_data, &rx_data_temp[1], 9);
-}
-
-void FM_ClearData(fm25v05_t* module) {
-	const uint8_t opcode = FM25V05_WRITE;
+void FM_ClearData(FM25L16B_t* module) {
+	const uint8_t opcode = FM25L16B_WRITE;
 	const uint16_t mem_size = MEMORY_SIZE;
 	uint16_t addr = 0x0000;
 	uint8_t tx_data_temp[mem_size/2 + 3];
