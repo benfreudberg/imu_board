@@ -5,7 +5,7 @@
  *      Author: Ben Freudberg
  */
 
-#include "ahrs.h"
+#include "kalman_filter.h"
 #include "hal_ICM20602.h"
 #include "hal_MMC5983MA.h"
 #include "FM25L16B.h"

@@ -5,12 +5,13 @@
  *      Author: Fongberg
  */
 
-#include "ahrs.h"
+#include "kalman_filter.h"
 #include "calibration.h"
-#include "various_functions.h"
+#include "math_functions.h"
 #include "global_variables.h"
 #include "tim.h"
-#include "usbd_cdc_if.h"
+#include "usb_device.h"
+#include "usbd_hid.h"
 
 volatile bool tim1_int = false;
 
@@ -73,9 +74,15 @@ void primary_loop(void) {
 
     collect_data_and_run_kf(mmc_new_data_b, time_ms);
 
-    if (time_ms % 100 == 0) {
-      CDC_Transmit_FS((uint8_t*) &q0, sizeof(q0));
+//    if (time_ms % 100 == 0) {
+//      CDC_Transmit_FS((uint8_t*) &q0, sizeof(q0));
+//    }
+    static uint8_t report[64] = {0};
+    if (time_ms%10 == 0) {
+      report[1]++;
+      report[2]++;
     }
+    USBD_HID_SendReport(&hUsbDeviceFS, report, 64);
 
     //todo: continue here
     time_ms++;

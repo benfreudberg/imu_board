@@ -1,12 +1,12 @@
 /*
- * AHRS.c
+ * kalman_filter.c
  *
  *  Created on: Jun 12, 2018
  *      Author: Ben Freudberg
  */
 
-#include <ahrs.h>
-#include "various_functions.h"
+#include "kalman_filter.h"
+#include "math_functions.h"
 #include <math.h>
 #include <arm_math.h>
 

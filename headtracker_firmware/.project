@@ -52,11 +52,6 @@
 			<locationURI>copy_PARENT/common_source_files/icm20602</locationURI>
 		</link>
 		<link>
-			<name>kalman_filter</name>
-			<type>2</type>
-			<locationURI>copy_PARENT/common_source_files/kalman_filter</locationURI>
-		</link>
-		<link>
 			<name>leds</name>
 			<type>2</type>
 			<locationURI>copy_PARENT/common_source_files/leds</locationURI>
@@ -75,6 +70,11 @@
 			<name>mmc5983ma</name>
 			<type>2</type>
 			<locationURI>copy_PARENT/common_source_files/mmc5983ma</locationURI>
+		</link>
+		<link>
+			<name>sensor_fusion</name>
+			<type>2</type>
+			<locationURI>copy_PARENT/common_source_files/kalman_filter</locationURI>
 		</link>
 		<link>
 			<name>spi_wrapper</name>

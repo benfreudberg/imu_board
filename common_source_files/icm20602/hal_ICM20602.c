@@ -7,7 +7,7 @@
 
 #include "hal_ICM20602.h"
 #include "spi_wrapper.h"
-#include "various_functions.h"
+#include "math_functions.h"
 
 const int GYROSENS[] = {250, 500, 1000, 2000};
 

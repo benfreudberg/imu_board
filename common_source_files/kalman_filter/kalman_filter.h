@@ -1,5 +1,5 @@
 /*
- * AHRS.h
+ * kalman_filter.h
  *
  *  Created on: Jun 12, 2018
  *      Author: Ben Freudberg

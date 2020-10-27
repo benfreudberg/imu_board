@@ -5,7 +5,7 @@
  *      Author: Ben Freudberg
  */
 
-#include <FM25L16B.h>
+#include "FM25L16B.h"
 #include "stdint.h"
 #include "string.h"
 
@@ -103,7 +103,7 @@ void FM_ClearData(FM25L16B_t* module) {
 	HAL_SPI_Transmit(module->SPI_Bus, tx_data_temp, sizeof(tx_data_temp), sizeof(tx_data_temp)/1000 + 1);
 	HAL_GPIO_WritePin(module->cs_port, module->cs_pin, GPIO_PIN_SET);
 
-	addr = 0x00FF;
+	addr = mem_size/2;
 	memcpy(&tx_data_temp[1], &addr, sizeof(addr));
 	HAL_GPIO_WritePin(module->cs_port, module->cs_pin, GPIO_PIN_RESET);
 	HAL_SPI_Transmit(module->SPI_Bus, tx_data_temp, sizeof(tx_data_temp), sizeof(tx_data_temp)/1000 + 1);

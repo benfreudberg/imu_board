@@ -6,7 +6,7 @@
  */
 
 #include "global_variables.h"
-#include "various_functions.h"
+#include "math_functions.h"
 #include "memory_storage_map.h"
 #include "leds.h"
 

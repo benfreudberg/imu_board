@@ -6,7 +6,7 @@
  */
 
 #include "stm32g4xx_hal.h"
-#include "various_functions.h"
+#include "math_functions.h"
 #include "global_variables.h"
 #include <math.h>
 

@@ -7,7 +7,7 @@
  
 #include "hal_MMC5983MA.h"
 #include "spi_wrapper.h"
-#include "various_functions.h"
+#include "math_functions.h"
 
 
 static void mag_reading_to_data(int16_t data_out[3], uint8_t reading[6]) {
