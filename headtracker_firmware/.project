@@ -32,54 +32,14 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>calibration</name>
+			<name>common_source_files_debug</name>
 			<type>2</type>
-			<locationURI>copy_PARENT/common_source_files/calibration</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/common_source_files</locationURI>
 		</link>
 		<link>
-			<name>fm25l16b</name>
+			<name>common_source_files_release</name>
 			<type>2</type>
-			<locationURI>copy_PARENT/common_source_files/fm25l16b</locationURI>
-		</link>
-		<link>
-			<name>global</name>
-			<type>2</type>
-			<locationURI>copy_PARENT/common_source_files/global</locationURI>
-		</link>
-		<link>
-			<name>icm20602</name>
-			<type>2</type>
-			<locationURI>copy_PARENT/common_source_files/icm20602</locationURI>
-		</link>
-		<link>
-			<name>leds</name>
-			<type>2</type>
-			<locationURI>copy_PARENT/common_source_files/leds</locationURI>
-		</link>
-		<link>
-			<name>math_functions</name>
-			<type>2</type>
-			<locationURI>copy_PARENT/common_source_files/math_functions</locationURI>
-		</link>
-		<link>
-			<name>memory_storage</name>
-			<type>2</type>
-			<locationURI>copy_PARENT/common_source_files/memory_storage</locationURI>
-		</link>
-		<link>
-			<name>mmc5983ma</name>
-			<type>2</type>
-			<locationURI>copy_PARENT/common_source_files/mmc5983ma</locationURI>
-		</link>
-		<link>
-			<name>sensor_fusion</name>
-			<type>2</type>
-			<locationURI>copy_PARENT/common_source_files/kalman_filter</locationURI>
-		</link>
-		<link>
-			<name>spi_wrapper</name>
-			<type>2</type>
-			<locationURI>copy_PARENT/common_source_files/spi_wrapper</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/common_source_files</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>

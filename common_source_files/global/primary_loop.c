@@ -8,12 +8,15 @@
 #include "kalman_filter.h"
 #include "calibration.h"
 #include "math_functions.h"
+#include "state_interpretation.h"
+#include "head_tracker_usb_packet.h"
 #include "global_variables.h"
 #include "tim.h"
 #include "usb_device.h"
-#include "usbd_hid.h"
+#include "usbd_customhid.h"
 
 volatile bool tim1_int = false;
+static USB_TrackerPacket_t usb_packet;
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   if (htim == &htim1) {
@@ -74,15 +77,12 @@ void primary_loop(void) {
 
     collect_data_and_run_kf(mmc_new_data_b, time_ms);
 
-//    if (time_ms % 100 == 0) {
-//      CDC_Transmit_FS((uint8_t*) &q0, sizeof(q0));
-//    }
-    static uint8_t report[64] = {0};
-    if (time_ms%10 == 0) {
-      report[1]++;
-      report[2]++;
-    }
-    USBD_HID_SendReport(&hUsbDeviceFS, report, 64);
+    int16_t ypr[3];
+    STATE_QtoYPR(q0, ypr);
+    usb_packet.yaw = (int16_t)ypr[0];
+    usb_packet.pitch = (int16_t)ypr[1];
+    usb_packet.roll = (int16_t)ypr[2];
+    USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, (uint8_t*)&usb_packet, sizeof(USB_TrackerPacket_t));
 
     //todo: continue here
     time_ms++;

@@ -8,12 +8,13 @@
 #include "global_variables.h"
 #include "calibration.h"
 #include "main.h"
+#include "state_interpretation.h"
 
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
   switch (GPIO_Pin) {
     case BTN0_Pin :
-      //zero();
+      STATE_SetZero(q0_zero, q0);
       HAL_Delay(500);
       __HAL_GPIO_EXTI_CLEAR_IT(BTN0_Pin);
       HAL_NVIC_ClearPendingIRQ(BTN0_EXTI_IRQn);

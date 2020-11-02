@@ -45,6 +45,8 @@ void LED_SetPWM(const led_t *led, uint32_t period_ms, uint8_t duty_cycle) {
     case TIM_CHANNEL_6 :
       crr = &led->htim->Instance->CCR6;
       break;
+    default :
+      crr = 0;
   }
   *crr = led->htim->Instance->ARR * duty_cycle / 0xff;
 }

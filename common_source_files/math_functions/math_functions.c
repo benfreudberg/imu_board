@@ -105,6 +105,13 @@ void quatConj(float result[4], float q[4]) {
   result[3] = -q[3];
 }
 
+void vectRot(float q[4], float v[4]) {
+  float q_inv[4], q_temp[4];
+  quatConj(q_inv, q);
+  quatProd(q_temp, q, v);
+  quatProd(v, q_temp, q_inv);
+}
+
 float vectMag(float vec[], int len) {
   float sum_sqrs = 0;
   for (int i = 0; i < len; i++) {
@@ -179,6 +186,7 @@ void rel_rot(float q_rel[4], float qa[4], float qb[4]) {
 	quatProd(q_rel, qa_conj, qb);
 }
 
+//theta in degrees
 void sin_cos(float32_t theta, float32_t * pSinVal, float32_t * pCosVal) {
 	if (fabs(theta) < 0.0000001) {
 		*pSinVal = 0;
