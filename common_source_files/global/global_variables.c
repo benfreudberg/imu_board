@@ -18,4 +18,5 @@ int16_t gyro0data20[20][3];
 int16_t mag0data20[20][3];
 KalmanFilter kf0;
 float q0[4] = {1, 0, 0, 0};
-float q0_zero[4] = {1, 0, 0, 0};
+float q0_yawzero[4] = {1, 0, 0, 0};
+float q0_base_rot[4] = {.7071067811865476,  -0.7071067811865476, 0, 0};//{1, 0, 0, 0};

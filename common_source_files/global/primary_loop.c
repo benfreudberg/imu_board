@@ -84,7 +84,6 @@ void primary_loop(void) {
     usb_packet.roll = (int16_t)ypr[2];
     USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, (uint8_t*)&usb_packet, sizeof(USB_TrackerPacket_t));
 
-    //todo: continue here
     time_ms++;
     time_ms %= 1000;
   }

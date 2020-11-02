@@ -22,5 +22,6 @@ extern int16_t gyro0data20[20][3];
 extern int16_t mag0data20[20][3];
 extern KalmanFilter kf0;
 extern float q0[4];
-extern float q0_zero[4];
+extern float q0_yawzero[4];
+extern float q0_base_rot[4];
 
