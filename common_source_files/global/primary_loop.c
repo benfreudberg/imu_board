@@ -21,11 +21,12 @@ static USB_TrackerPacket_t usb_packet;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   if (htim == &htim1) {
     tim1_int = true;
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
   }
 }
 
 static void collect_data_and_run_kf(bool mmc_new_data_b, int time_ms) {
-  float IMU0_floats[7], MMC0_floats[3];
+  float IMU0_floats[7], MMC0_floats[3], ACC0_rotated_q[4], GYRO0_rotated_q[4], MAG0_rotated_q[4];
   int16_t IMU0_raw[7], MMC0_raw[3];
 
   ICM20602_Read(&ICM0, IMU0_floats, IMU0_raw);
@@ -45,20 +46,31 @@ static void collect_data_and_run_kf(bool mmc_new_data_b, int time_ms) {
   bool acc0_good_b = false;
   if (acc0_mag > 0.98 && acc0_mag < 1.02) {
     acc0_good_b = true;
+    float ACC0_raw_q[4] = {0, IMU0_floats[0], IMU0_floats[1], IMU0_floats[2]};
+    vectRot(ACC0_rotated_q, q0_base_rot, ACC0_raw_q);
     KalmanFilter_AccStep(qa0, q0, IMU0_floats);
+//    KalmanFilter_AccStep(qa0, q0, ACC0_rotated_q + 1);
   }
 
   if (mmc_new_data_b && acc0_good_b)  {
     float mag0_mag = vectMag(MMC0_floats, 3);
     if (mag0_mag > 0.95 && mag0_mag < 1.05) {
+      float MAG0_raw_q[4] = {0, MMC0_floats[0], MMC0_floats[1], MMC0_floats[2]};
+      vectRot(MAG0_rotated_q, q0_base_rot, MAG0_raw_q);
       KalmanFilter_MagStep(qa0, MMC0_floats);
+//      KalmanFilter_MagStep(qa0, MAG0_rotated_q + 1);
     }
   }
 
+  float GYRO0_raw_q[4] = {0, IMU0_floats[4], IMU0_floats[5], IMU0_floats[6]};
+  vectRot(GYRO0_rotated_q, q0_base_rot, GYRO0_raw_q);
+
   if (acc0_good_b) {
     KalmanFilter_Step(&kf0, q0, qa0, (IMU0_floats + 4));
+//    KalmanFilter_Step(&kf0, q0, qa0, (GYRO0_rotated_q + 1));
   } else {
     KalmanFilter_Step(&kf0, q0, q0, (IMU0_floats + 4));
+//    KalmanFilter_Step(&kf0, q0, q0, (GYRO0_rotated_q + 1));
   }
 
   if (mmc_new_data_b && collect_mag_data_b) {
@@ -86,5 +98,6 @@ void primary_loop(void) {
 
     time_ms++;
     time_ms %= 1000;
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
   }
 }

@@ -21,9 +21,13 @@ typedef struct  {
 } KalmanFilter;
 
 
-void KalmanFilter_AccStep(float qa[4], float q[4], float acc[3]);
-void KalmanFilter_MagStep(float qa[4], float mag[3]);
-void KalmanFilter_Init(KalmanFilter* KF, float Q_init_vals[16], float R_init_vals[16], float P_post_init_vals[16], float dt);
-void KalmanFilter_Step(KalmanFilter* KF, float qk[4], float qak[4], float gyro[3]);
+void KalmanFilter_AccStep(float qa[4], const float q[4], const float acc[3]);
+void KalmanFilter_MagStep(float qa[4], const float mag[3]);
+void KalmanFilter_Init(KalmanFilter* KF,
+                       const float Q_init_vals[16],
+                       const float R_init_vals[16],
+                       const float P_post_init_vals[16],
+                       float dt);
+void KalmanFilter_Step(KalmanFilter* KF, float qk[4], float qak[4], const float gyro[3]);
 
 #endif

@@ -10,7 +10,7 @@
 #include "global_variables.h"
 #include <math.h>
 
-static void GaussNewton_Residuals(float32_t residuals[120], float32_t data[360], float32_t beta[6]) {
+static void GaussNewton_Residuals(float32_t residuals[120], const float32_t data[360], const float32_t beta[6]) {
   for (int i = 0; i < 120; i++) {
     residuals[i] = 1;
     for (int j = 0; j < 3; j++) {
@@ -19,7 +19,7 @@ static void GaussNewton_Residuals(float32_t residuals[120], float32_t data[360],
   }
 }
 
-static void GaussNewton_Jacobian(float32_t jacobian_data[360], float32_t data[360], float32_t beta[6]) {
+static void GaussNewton_Jacobian(float32_t jacobian_data[360], const float32_t data[360], const float32_t beta[6]) {
   for (int i = 0; i < 120; i++) {
     for (int j = 0; j < 3; j++) {
       jacobian_data[i*6 + j] = 2*beta[3 + j] * beta[3+j] * (data[i*3 + j] - beta[j]);
@@ -28,7 +28,7 @@ static void GaussNewton_Jacobian(float32_t jacobian_data[360], float32_t data[36
   }
 }
 
-static void GaussNewton_Step(float32_t data[360], float32_t beta[6]) {
+static void GaussNewton_Step(const float32_t data[360], float32_t beta[6]) {
   static float32_t residuals[120];
   GaussNewton_Residuals(residuals, data, beta);
   arm_matrix_instance_f32 R;
@@ -71,7 +71,7 @@ static void GaussNewton_Step(float32_t data[360], float32_t beta[6]) {
   }
 }
 
-void GaussNewton(float32_t data[360], float32_t beta[6]) {
+void GaussNewton(const float32_t data[360], float32_t beta[6]) {
   float32_t change = 100;
   int step = 0;
   while (change > 0.00004 && step++ < 100) {
@@ -87,7 +87,7 @@ void GaussNewton(float32_t data[360], float32_t beta[6]) {
   }
 }
 
-void quatProd(float result[4], float qa[4], float qb[4]) {
+void quatProd(float result[4], const float qa[4], const float qb[4]) {
   float temp[4];
   temp[0] = qa[0]*qb[0] - qa[1]*qb[1] - qa[2]*qb[2] - qa[3]*qb[3];
   temp[1] = qa[0]*qb[1] + qa[1]*qb[0] + qa[2]*qb[3] - qa[3]*qb[2];
@@ -98,21 +98,21 @@ void quatProd(float result[4], float qa[4], float qb[4]) {
   }
 }
 
-void quatConj(float result[4], float q[4]) {
+void quatConj(float result[4], const float q[4]) {
   result[0] = q[0];
   result[1] = -q[1];
   result[2] = -q[2];
   result[3] = -q[3];
 }
 
-void vectRot(float q[4], float v[4]) {
+void vectRot(float v_out[4], const float q[4], const float v_in[4]) {
   float q_inv[4], q_temp[4];
   quatConj(q_inv, q);
-  quatProd(q_temp, q, v);
-  quatProd(v, q_temp, q_inv);
+  quatProd(q_temp, q, v_in);
+  quatProd(v_out, q_temp, q_inv);
 }
 
-float vectMag(float vec[], int len) {
+float vectMag(const float vec[], int len) {
   float sum_sqrs = 0;
   for (int i = 0; i < len; i++) {
 	  sum_sqrs += vec[i]*vec[i];
@@ -129,7 +129,7 @@ void vectNormalize(float vec[], int len) {
   }
 }
 
-void vectCross(float result[3], float u[3], float v[3]) {
+void vectCross(float result[3], const float u[3], const float v[3]) {
   float temp[3];
   temp[0] = u[1]*v[2] - u[2]*v[1];
   temp[1] = u[2]*v[0] - u[0]*v[2];
@@ -139,7 +139,7 @@ void vectCross(float result[3], float u[3], float v[3]) {
     }
 }
 
-float vectDot(float u[], float v[], int len) {
+float vectDot(const float u[], const float v[], int len) {
   float result = 0;
   for (int i = 0; i<len; i++) {
     result += u[i]*v[i];
@@ -180,7 +180,7 @@ float asin_nv(float x) {
   return ret - 2 * negate * ret;
 }
 
-void rel_rot(float q_rel[4], float qa[4], float qb[4]) {
+void rel_rot(float q_rel[4], const float qa[4], const float qb[4]) {
 	float qa_conj[4];
 	quatConj(qa_conj, qa);
 	quatProd(q_rel, qa_conj, qb);
