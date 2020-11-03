@@ -12,7 +12,7 @@
 
 void STATE_QtoYPR(float q[4], int16_t ypr[3]) {
   float q_state[4], ypr_f[3], sin, cos;
-  quatProd(q_state, q0_yawzero, q_state);
+  quatProd(q_state, q0_yawzero, q);
 
   //yaw
   float q_v0[4] = {0, 0, 1, 0}; //forward vector

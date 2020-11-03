@@ -190,11 +190,9 @@ void CAL_Mag20BufferPush(int16_t MAG_raw[3]) {
 
 
 void CAL_SetYawZero(void) {
-  float q_state[4];
   float yaw, sin, cos;
   float q_v0[4] = {0, 0, 1, 0}; //forward vector
-  quatProd(q_state, q0_base_rot, q0);
-  vectRot(q_v0, q_state, q_v0);
+  vectRot(q_v0, q0, q_v0);
   yaw = atan2(-q_v0[1], q_v0[2]);
   sin_cos(yaw/2*180/PI, &sin, &cos);
   q0_yawzero[0] = cos;
