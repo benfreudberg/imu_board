@@ -10,7 +10,7 @@
 #include <math.h>
 #include <arm_math.h>
 
-void KalmanFilter_AccStep(float qa[4], float q[4], float acc[3]) {
+void KalmanFilter_AccStep(float qa[4], const float q[4], const float acc[3]) {
   float gN[3] = {0, 0, 1};
   float ua = 0.9;
   float qg[4] = {0, 0, 0, 0};
@@ -46,7 +46,7 @@ void KalmanFilter_AccStep(float qa[4], float q[4], float acc[3]) {
   vectNormalize(qa, 4);
 }
 
-void KalmanFilter_MagStep(float qa[4], float mag[3]) {
+void KalmanFilter_MagStep(float qa[4], const float mag[3]) {
   float mN[3] = {.22892, .97345, 0};
   float qm[4] = {0, 0, 0, 0};
   for (int i = 0; i < 3; i++) {
@@ -87,7 +87,11 @@ void KalmanFilter_MagStep(float qa[4], float mag[3]) {
   vectNormalize(qa, 4);
 }
 
-void KalmanFilter_Init(KalmanFilter* KF, float Q_init_vals[16], float R_init_vals[16], float P_post_init_vals[16], float dt) {
+void KalmanFilter_Init(KalmanFilter* KF,
+                       const float Q_init_vals[16],
+                       const float R_init_vals[16],
+                       const float P_post_init_vals[16],
+                       float dt) {
 	for (int i = 0; i < 16; i++) {
 		KF->Q_vals[i] = Q_init_vals[i];
 		KF->R_vals[i] = R_init_vals[i];
@@ -101,7 +105,7 @@ void KalmanFilter_Init(KalmanFilter* KF, float Q_init_vals[16], float R_init_val
 
 }
 
-void KalmanFilter_Step(KalmanFilter* KF, float qk[4], float qak[4], float gyro[3]) {
+void KalmanFilter_Step(KalmanFilter* KF, float qk[4], float qak[4], const float gyro[3]) {
 	float32_t q_pre[4];
 	arm_matrix_instance_f32 q_pre_vect;
 	arm_matrix_instance_f32 qk_vect;
