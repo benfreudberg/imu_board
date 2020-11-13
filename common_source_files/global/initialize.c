@@ -40,7 +40,7 @@ void Init(void) {
   ICM0.CS_Port = CS_ICM0_GPIO_Port;
   ICM0.CS_Pin = CS_ICM0_Pin;
   ICM0.AccSens = Accelerometer_2G;
-  ICM0.GyroSens = Gyroscope_250s;
+  ICM0.GyroSens = Gyroscope_1000s;
   ICM0.GyroFilt = Gyroscope_176Hz;
 
   HAL_GPIO_WritePin(ICM0.CS_Port, ICM0.CS_Pin, GPIO_PIN_SET);

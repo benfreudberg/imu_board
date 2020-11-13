@@ -25,7 +25,7 @@ static void imu_int_to_float(ICM20602* ICM, int16_t input[7], float output[7]) {
     output[i] = ((float) input[i] - beta_acc[i]) * beta_acc[i + 3];
   }
 
-  output[3] = input[3] / 326.8 + 25; //degrees C
+  output[3] = (float) input[3] / 326.8 + 25; //degrees C
 
   for (int i = 4; i < 7; i++) {
     // scale to rad/sec (from 250/500/1000/2000 deg/s) and then add offset

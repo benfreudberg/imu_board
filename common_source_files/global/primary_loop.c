@@ -14,6 +14,8 @@
 #include "tim.h"
 #include "usb_device.h"
 #include "usbd_customhid.h"
+//debug
+#include "usart.h"
 
 volatile bool tim1_int = false;
 static USB_TrackerPacket_t usb_packet;
@@ -27,7 +29,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 static void collect_data_and_run_kf(bool mmc_new_data_b, int time_ms) {
   float IMU0_floats[7], MMC0_floats[3], ACC0_rotated_q[4], GYRO0_rotated_q[4], MAG0_rotated_q[4];
-  int16_t IMU0_raw[7], MMC0_raw[3];
+  static int16_t IMU0_raw[7], MMC0_raw[3];
 
   ICM20602_Read(&ICM0, IMU0_floats, IMU0_raw);
   if (time_ms % 5 == 0) {
@@ -72,6 +74,27 @@ static void collect_data_and_run_kf(bool mmc_new_data_b, int time_ms) {
   if (mmc_new_data_b && collect_mag_data_b) {
     CAL_Mag20BufferPush(MMC0_raw);
   }
+
+  //debug data
+#define DEBUG_BUFFER_LENGTH   100
+  static int16_t buffer[2][DEBUG_BUFFER_LENGTH][9];
+  static bool buffer_bool = 0;
+
+  for (int i = 0; i < 3; i++) {
+    buffer[buffer_bool][time_ms % DEBUG_BUFFER_LENGTH][i + 0] = IMU0_raw[i];
+    buffer[buffer_bool][time_ms % DEBUG_BUFFER_LENGTH][i + 3] = IMU0_raw[i + 4];
+    buffer[buffer_bool][time_ms % DEBUG_BUFFER_LENGTH][i + 6] = MMC0_raw[i];
+//    buffer[buffer_bool][time_ms % DEBUG_BUFFER_LENGTH][i + 6] = (int16_t)(MMC0_floats[i] * 1000);
+  }
+  if (time_ms % DEBUG_BUFFER_LENGTH == DEBUG_BUFFER_LENGTH - 5) {
+    static uint64_t sync_marker = 0x0123456789abcdef;
+    HAL_UART_Transmit_DMA(&huart1, (uint8_t*)(&sync_marker), sizeof(sync_marker));
+  }
+  if (time_ms % DEBUG_BUFFER_LENGTH == DEBUG_BUFFER_LENGTH - 1) {
+    HAL_UART_Transmit_DMA(&huart1, (uint8_t*)(&(buffer[buffer_bool][0][0])), sizeof(buffer)/2);
+    buffer_bool = !buffer_bool;
+  }
+  //end debug data
 }
 
 
@@ -82,6 +105,7 @@ void primary_loop(void) {
   if (tim1_int) {
     tim1_int = false;
     mmc_new_data_b = !mmc_new_data_b;
+//    mmc_new_data_b = false;
 
     collect_data_and_run_kf(mmc_new_data_b, time_ms);
 
@@ -91,6 +115,7 @@ void primary_loop(void) {
     usb_packet.pitch = (int16_t)ypr[1];
     usb_packet.roll = (int16_t)ypr[2];
     USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, (uint8_t*)&usb_packet, sizeof(USB_TrackerPacket_t));
+
 
     time_ms++;
     time_ms %= 1000;

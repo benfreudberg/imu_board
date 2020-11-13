@@ -77,6 +77,15 @@ HAL_StatusTypeDef MMC5983MA_Init(MMC5983MA* MMC, float beta[6]) {
   HAL_SPI_TransmitReceive(SPI_Bus, (uint8_t*) &aTxBuffer, (uint8_t*) &aRxBuffer, 2, 5);
   HAL_GPIO_WritePin(CS_Port, CS_Pin, GPIO_PIN_SET);
   
+  HAL_Delay(100);
+
+  //send "reset" command
+  aTxBuffer[0] = Config_Reg0;
+  aTxBuffer[1] = Config0_Reset;
+  HAL_GPIO_WritePin(CS_Port, CS_Pin, GPIO_PIN_RESET);
+  HAL_SPI_TransmitReceive(SPI_Bus, (uint8_t*) &aTxBuffer, (uint8_t*) &aRxBuffer, 2, 5);
+  HAL_GPIO_WritePin(CS_Port, CS_Pin, GPIO_PIN_SET);
+
   HAL_Delay(5);
   
   //send start command
