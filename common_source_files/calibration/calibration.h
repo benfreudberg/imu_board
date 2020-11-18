@@ -11,10 +11,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define DATA_VERSION_CODE   (0x7ac39b55) //to be changed if the data structure changes
-
 typedef struct _CAL_Data_t {
-    uint32_t data_version_code;
     float acc0beta[6];
     float gyro0beta[3];
     float mag0beta[6];

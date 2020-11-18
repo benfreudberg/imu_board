@@ -13,27 +13,39 @@
 #include "leds.h"
 
 void Init(void) {
-  // check memory for calibration values
+  // set default values in case there's nothing in memory
   CAL_Data_t cal_data = {
-    .acc0beta = {0, 0, 0,
-        6.09e-005, 6.09e-005, 6.09e-005},
-    .gyro0beta = {0, 0, 0},
-    .mag0beta = {0, 0, 0,
-        0.000517, 0.000517, 0.000517},
-    .data_version_code = DATA_VERSION_CODE,
+      .acc0beta  = {0, 0, 0,
+          6.09e-005, 6.09e-005, 6.09e-005},
+      .gyro0beta = {0, 0, 0},
+      .mag0beta  = {0, 0, 0,
+          0.000517, 0.000517, 0.000517},
+  };
+  Config_Data_t config_data = {
+      .top_face_number   = 1,
+      .front_face_number = 2,
   };
 
   FM25.SPI_Bus = &hspi1;
   FM25.cs_port = CS_FRAM0_GPIO_Port;
-  FM25.cs_pin = CS_FRAM0_Pin;
+  FM25.cs_pin  = CS_FRAM0_Pin;
 
-  CAL_Data_t memory_cal_data;
-  MEM_ReadCalData(&memory_cal_data);
-  if (memory_cal_data.data_version_code != DATA_VERSION_CODE) {
+  // check memory for calibration values
+  uint32_t data_version_code;
+  MEM_ReadDataVersionCode(&data_version_code);
+  if (data_version_code != DATA_VERSION_CODE) {
     MEM_WriteCalData(&cal_data);
+    MEM_WriteConfigData(&config_data);
+
+    data_version_code = DATA_VERSION_CODE;
+    MEM_WriteDataVersionCode(&data_version_code);
   } else {
-    cal_data = memory_cal_data;
+    MEM_ReadCalData(&cal_data);
+    MEM_ReadConfigData(&config_data);
   }
+
+  //set base_q
+  Configuration_SetBaseQ(config_data.top_face_number, config_data.front_face_number, q0_base_rot);
 
   //imu initialization
   ICM0.SPI_Bus = &hspi1;

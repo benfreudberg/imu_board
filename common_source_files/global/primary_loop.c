@@ -84,7 +84,6 @@ static void collect_data_and_run_kf(bool mmc_new_data_b, int time_ms) {
     buffer[buffer_bool][time_ms % DEBUG_BUFFER_LENGTH][i + 0] = IMU0_raw[i];
     buffer[buffer_bool][time_ms % DEBUG_BUFFER_LENGTH][i + 3] = IMU0_raw[i + 4];
     buffer[buffer_bool][time_ms % DEBUG_BUFFER_LENGTH][i + 6] = MMC0_raw[i];
-//    buffer[buffer_bool][time_ms % DEBUG_BUFFER_LENGTH][i + 6] = (int16_t)(MMC0_floats[i] * 1000);
   }
   if (time_ms % DEBUG_BUFFER_LENGTH == DEBUG_BUFFER_LENGTH - 5) {
     static uint64_t sync_marker = 0x0123456789abcdef;
