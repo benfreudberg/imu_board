@@ -130,11 +130,11 @@ static void CAL_MagStep(void) {
         results_valid = false;
         break;
       }
-      if (MMC0.beta[i+3] > 5.8e-4) {
+      if (MMC0.beta[i+3] > 5.6e-4) {
         results_valid = false;
         break;
       }
-      if (MMC0.beta[i+3] < 4.0e-4) { //was 4.8
+      if (MMC0.beta[i+3] < 4.8e-4) {
         results_valid = false;
         break;
       }
