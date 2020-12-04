@@ -20,3 +20,4 @@ KalmanFilter kf0;
 float q0[4]          = {1, 0, 0, 0};
 float q0_yawzero[4]  = {1, 0, 0, 0};
 float q0_base_rot[4];// = {1, 0, 0, 0};
+float translation_state[2][3] = {0};

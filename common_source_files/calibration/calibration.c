@@ -83,11 +83,11 @@ void CAL_AccStep(void) {
         success = false;
         break;
       }
-      if (ICM0.accbeta[i+3] > 6.2e-5) {
+      if (ICM0.accbeta[i+3] > 2.5e-4) {
         success = false;
         break;
       }
-      if (ICM0.accbeta[i+3] < 6e-5) {
+      if (ICM0.accbeta[i+3] < 2.4e-4) {
         success = false;
         break;
       }

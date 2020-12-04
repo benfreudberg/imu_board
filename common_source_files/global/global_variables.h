@@ -24,4 +24,5 @@ extern KalmanFilter kf0;
 extern float q0[4];
 extern float q0_yawzero[4];
 extern float q0_base_rot[4];
+extern float translation_state[2][3];
 

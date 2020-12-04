@@ -16,7 +16,7 @@ void Init(void) {
   // set default values in case there's nothing in memory
   CAL_Data_t cal_data = {
       .acc0beta  = {0, 0, 0,
-          6.09e-005, 6.09e-005, 6.09e-005},
+          2.4414e-004, 2.4414e-004, 2.4414e-004},
       .gyro0beta = {0, 0, 0},
       .mag0beta  = {0, 0, 0,
           0.000517, 0.000517, 0.000517},
@@ -51,7 +51,7 @@ void Init(void) {
   ICM0.SPI_Bus = &hspi1;
   ICM0.CS_Port = CS_ICM0_GPIO_Port;
   ICM0.CS_Pin = CS_ICM0_Pin;
-  ICM0.AccSens = Accelerometer_2G;
+  ICM0.AccSens = Accelerometer_8G;
   ICM0.GyroSens = Gyroscope_1000s;
   ICM0.GyroFilt = Gyroscope_176Hz;
 
