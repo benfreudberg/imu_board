@@ -6,7 +6,7 @@
  */
 
 #include "kalman_filter.h"
-#include "translation.h"
+//#include "translation.h"
 #include "calibration.h"
 #include "math_functions.h"
 #include "state_interpretation.h"
@@ -82,28 +82,28 @@ static void collect_data_and_run_kf(bool mmc_new_data_b, int time_ms) {
   }
 
   //translation update
-  float gravity_g_q[4] = {0, 0, 0, 1};
-  float q_state[4];
-  quatProd(q_state, q0_yawzero, q0);
-  vectRot(ACC0_rotated_q, q_state, ACC0_rotated_q);
-  for (int i=0; i<3; i++) {
-    ACC0_rotated_q[i+1] -= gravity_g_q[i+1];
-  }
-  static bool do_translation_update = false;
-  if (!do_translation_update && time_ms > 990) {
-    do_translation_update = true;
-  }
-  if (do_translation_update) {
-    TRANS_update(translation_state, ACC0_rotated_q + 1, dt, q0);
-    float q_state_inv[4], q0_base_rot_inv[4];
-    quatConj(q_state_inv, q0);
-    quatConj(q0_base_rot_inv, q0_base_rot);
-    vectRot(ACC0_rotated_q, q_state_inv, ACC0_rotated_q);
-    vectRot(ACC0_rotated_q, q0_base_rot_inv, ACC0_rotated_q);
-    for (int i=0; i<3; i++) {
-      ICM0.accbeta[i] += ACC0_rotated_q[i]/2000 / ICM0.accbeta[i + 3];
-    }
-  }
+//  float gravity_g_q[4] = {0, 0, 0, 1};
+//  float q_state[4];
+//  quatProd(q_state, q0_yawzero, q0);
+//  vectRot(ACC0_rotated_q, q_state, ACC0_rotated_q);
+//  for (int i=0; i<3; i++) {
+//    ACC0_rotated_q[i+1] -= gravity_g_q[i+1];
+//  }
+//  static bool do_translation_update = false;
+//  if (!do_translation_update && time_ms > 990) {
+//    do_translation_update = true;
+//  }
+//  if (do_translation_update) {
+//    TRANS_update(translation_state, ACC0_rotated_q + 1, dt, q0);
+////    float q_state_inv[4], q0_base_rot_inv[4];
+////    quatConj(q_state_inv, q0);
+////    quatConj(q0_base_rot_inv, q0_base_rot);
+////    vectRot(ACC0_rotated_q, q_state_inv, ACC0_rotated_q);
+////    vectRot(ACC0_rotated_q, q0_base_rot_inv, ACC0_rotated_q);
+////    for (int i=0; i<3; i++) {
+////      ICM0.accbeta[i] += ACC0_rotated_q[i + 1]/2000 / ICM0.accbeta[i + 3];
+////    }
+//  }
 
   //debug data
 #define DEBUG_BUFFER_LENGTH   100
@@ -143,9 +143,9 @@ void primary_loop(void) {
     usb_packet.yaw = (int16_t)ypr[0];
     usb_packet.pitch = (int16_t)ypr[1];
     usb_packet.roll = (int16_t)ypr[2];
-    usb_packet.x =  (int16_t)(translation_state[1][0] * (1<<15));
-    usb_packet.y =  (int16_t)(translation_state[1][1] * (1<<15));
-    usb_packet.z =  (int16_t)(translation_state[1][2] * (1<<15));
+//    usb_packet.x =  (int16_t)(translation_state[1][0] * (1<<15));
+//    usb_packet.y =  (int16_t)(translation_state[1][1] * (1<<15));
+//    usb_packet.z =  (int16_t)(translation_state[1][2] * (1<<15));
     USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, (uint8_t*)&usb_packet, sizeof(USB_TrackerPacket_t));
 
 

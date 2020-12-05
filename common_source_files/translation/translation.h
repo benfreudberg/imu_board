@@ -14,5 +14,6 @@
  */
 void TRANS_update(float curr_state[2][3], float const acc_vec_g[3], float dt, float const curr_rot_q[4]);
 void TRANS_zero(float curr_state[2][3]);
+void TRANS_initPID(void);
 
 #endif /* TRANSLATION_TRANSLATION_H_ */

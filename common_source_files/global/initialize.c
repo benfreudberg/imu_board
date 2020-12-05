@@ -5,6 +5,7 @@
  *      Author: Fongberg
  */
 
+//#include "translation.h"
 #include "global_variables.h"
 #include "spi.h"
 #include "tim.h"
@@ -87,6 +88,9 @@ void Init(void) {
                  0, 0, 0, 2 };
 
   KalmanFilter_Init(&kf0, Q0_vals, R0_vals, P_post0_vals, dt);
+
+  //translation pid initialization
+//  TRANS_initPID();
 
 
   //1 kHz interrupt timer initialization

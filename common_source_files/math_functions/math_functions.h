@@ -12,6 +12,8 @@
 #include "hal_ICM20602.h"
 #include <stdbool.h>
 
+#define SIGN(x)   x/fabs(x)
+
 void GaussNewton(const float32_t* data, float32_t* beta);
 void quatProd(float result[4], const float qa[4], const float qb[4]);
 void quatConj(float result[4], const float q[4]);

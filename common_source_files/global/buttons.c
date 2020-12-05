@@ -7,7 +7,7 @@
 
 #include "global_variables.h"
 #include "calibration.h"
-#include "translation.h"
+//#include "translation.h"
 #include "main.h"
 
 
@@ -15,7 +15,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
   switch (GPIO_Pin) {
     case BTN0_Pin :
       CAL_SetYawZero();
-      TRANS_zero(translation_state);
+//      TRANS_zero(translation_state);
       __HAL_GPIO_EXTI_CLEAR_IT(BTN0_Pin);
       HAL_NVIC_ClearPendingIRQ(BTN0_EXTI_IRQn);
       break;
