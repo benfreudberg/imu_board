@@ -24,7 +24,7 @@ void Init(void) {
   };
   Config_Data_t config_data = {
       .top_face_number   = 1,
-      .front_face_number = 2,
+      .front_face_number = 3,
   };
 
   FM25.SPI_Bus = &hspi1;
@@ -42,7 +42,8 @@ void Init(void) {
     MEM_WriteDataVersionCode(&data_version_code);
   } else {
     MEM_ReadCalData(&cal_data);
-    MEM_ReadConfigData(&config_data);
+// comment this out so that it will always use the hard-coded values since i'm too lazy to create a user interface to do this
+//    MEM_ReadConfigData(&config_data);
   }
 
   //set base_q

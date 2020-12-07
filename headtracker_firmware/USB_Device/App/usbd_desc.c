@@ -65,9 +65,9 @@
 
 #define USBD_VID     1155
 #define USBD_LANGID_STRING     1033
-#define USBD_MANUFACTURER_STRING     "OpenIMU board project"
+#define USBD_MANUFACTURER_STRING     "OpenIMU Tracker"
 #define USBD_PID     22352
-#define USBD_PRODUCT_STRING     "OpenIMU board headtracker"
+#define USBD_PRODUCT_STRING     "OpenIMU Tracker"
 #define USBD_CONFIGURATION_STRING     "Custom HID Config"
 #define USBD_INTERFACE_STRING     "Custom HID Interface"
 
