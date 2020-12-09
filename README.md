@@ -3,4 +3,4 @@ A bare-bones USB-based IMU board for attitude tracking to be used with head-trac
 
 * [Head Tracking firmware user guide](./docs/head_tracking_firmware_user_guide.md)
 
-PCB design files can be found here: https://workspace.circuitmaker.com/Projects/Details/Ben-Freudberg/imu-board-with-uC
+PCB design files can be found here: https://circuitmaker.com/Projects/Details/Ben-Freudberg/imu-board-with-uC-v02
