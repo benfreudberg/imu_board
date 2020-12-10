@@ -4,12 +4,12 @@ If you've changed code and built a new binary, there are two ways to load it ont
 * [STM32CubeProgrammer](https://www.st.com/en/development-tools/stm32cubeprog.html)
 * [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html) (also good for editing, building, and debugging code)
 
-If you don't have one, you can still load a binary via USB with the STM32CubeProgrammer software. I'm only going to discuss this method because I assume that if you're got an ST-link V2 programmer, you already know how to use it or can find out elsewhere.
+If you don't have one, you can still load a binary via USB with the STM32CubeProgrammer software. I'm only going to discuss this method because I assume that if you've got an ST-link V2 programmer, you already know how to use it or can find out elsewhere.
 
 1. While the device is *unplugged*, press and hold B0 (refer to the [mounting document](./mounting.md) for button labels).
 1. While holding B0, plug in the device, then release B0. No LEDs will come on, that's OK.
 1. Open the STM32CubeProgrammer software (it's OK if it was already open).
-1. Click the `refresh button` under `USB configuration` - `Port` should be populated with `USB1`.
+1. Click the `refresh button` under `USB configuration` -- `Port` should be populated with `USB1`.
 1. Click `Connect`.
 1. Click `Open File` and then select the `.bin` binary file you want to load.
 1. Click `Download`.
@@ -18,3 +18,7 @@ If you don't have one, you can still load a binary via USB with the STM32CubePro
 1. Plug it back in and it will be running the new firmware.
 
 The default firmware binary can be found [here](./../latest_binaries/headtracker_firmware.bin).
+
+<img src="./imgs/programmer_screenshot1.jpg" alt="programmer1" width="1000"/>
+<br/><br/>
+<img src="./imgs/programmer_screenshot2.jpg" alt="programmer2" width="1000"/>
