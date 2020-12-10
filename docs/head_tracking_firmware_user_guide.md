@@ -10,8 +10,8 @@ Please install this first.
 * Launch OpenTrack and select `imu_headtracker.ini` as your profile. `Input` should say `Joystick input`. Click the hammer and select the correct device if it's not selected already. Click `Start` and you should see the little octopus guy moving around as you rotate the device.
 
 * There are a lot of settings you can play around with, but first you should take care of
- * <font size="5"> [calibration](./calibration.md)
- * [mounting](./mounting.md) </font>
+  * <font size="5"> [calibration](./calibration.md)
+  * [mounting](./mounting.md) </font>
 
 
 * After you've mounted it and are ready to go, sit with your head in a neutral position and press B0 (refer to the [mounting document](./mounting.md) for button labels) - this will set your yaw zero point. It is probably best not to use the OpenTrack zeroing function, but you can try it if you want.
