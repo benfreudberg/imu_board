@@ -5,9 +5,9 @@ Please install this first.
 
 * When you plug in the device, it will appear to your computer as a USB gamepad. You can test its function by opening the `Set up usb game controllers` tool in windows. You should see an active signal on the X, Y, and Z rotation signals as you rotate the device.
 
-* Copy [imu_headtracker.ini](../other/imu_headtracker.ini) into `/Documents/opentrack-2.3`
+* Copy [imu_headtracker.ini](../other/imu_headtracker.ini) into `/Documents/opentrack-2.3`.
 
-* Launch OpenTrack and select `imu_headtracker.ini` as your profile. `Input` should say `Joystick input`. Click the hammer and select the correct device if it's not selected already. Click `Start` and you should see the little octopus guy moving around as you rotate the device.
+* Launch OpenTrack and select `imu_headtracker.ini` as your profile. `Input` should say `Joystick input`. Click the hammer and select the correct device. Make sure that yaw, pitch, and roll have axis 7, 5, and 6 selected respectively.  Click `Start` and you should see the little octopus guy moving around as you rotate the device.
 
 * There are a lot of settings you can play around with, but first you should take care of
   * <font size="5"> [calibration](./calibration.md)

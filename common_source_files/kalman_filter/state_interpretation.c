@@ -10,7 +10,7 @@
 #include "math_functions.h"
 #include "global_variables.h"
 
-void STATE_QtoYPR(float q[4], int16_t ypr[3]) {
+void STATE_QtoYPR(float q[4], uint16_t ypr[3]) {
   float q_state[4], ypr_f[3], sin, cos;
   quatProd(q_state, q0_yawzero, q);
 
@@ -35,8 +35,8 @@ void STATE_QtoYPR(float q[4], int16_t ypr[3]) {
   vectRot(q_v2, q_state, q_v2);
   ypr_f[2] = atan2(q_v2[1], q_v2[3]);
 
-  ypr[0] = (int16_t)(ypr_f[0] * 32767 / PI);
-  ypr[1] = (int16_t)(ypr_f[1] * 32767 / PI);
-  ypr[2] = (int16_t)(ypr_f[2] * 32767 / PI);
+  ypr[0] = (uint16_t)((ypr_f[0] / PI + 1) * 32767);
+  ypr[1] = (uint16_t)((ypr_f[1] / PI + 1) * 32767);
+  ypr[2] = (uint16_t)((ypr_f[2] / PI + 1) * 32767);
 }
 

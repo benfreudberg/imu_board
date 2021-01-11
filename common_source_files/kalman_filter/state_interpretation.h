@@ -10,6 +10,6 @@
 
 #include <stdint.h>
 
-void STATE_QtoYPR(float q[4], int16_t ypr[3]);
+void STATE_QtoYPR(float q[4], uint16_t ypr[3]);
 
 #endif /* STATE_INTERPRETATION_H_ */

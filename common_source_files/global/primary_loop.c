@@ -19,7 +19,7 @@
 #include "usart.h"
 
 volatile bool tim1_int = false;
-static USB_TrackerPacket_t usb_packet;
+static USB_TrackerPacket_t usb_packet = {UINT16_MAX/2, UINT16_MAX/2, UINT16_MAX/2, UINT16_MAX/2, UINT16_MAX/2, UINT16_MAX/2};
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   if (htim == &htim1) {
@@ -138,14 +138,14 @@ void primary_loop(void) {
 
     collect_data_and_run_kf(mmc_new_data_b, time_ms);
 
-    int16_t ypr[3];
+    uint16_t ypr[3];
     STATE_QtoYPR(q0, ypr);
-    usb_packet.yaw = (int16_t)ypr[0];
-    usb_packet.pitch = (int16_t)ypr[1];
-    usb_packet.roll = (int16_t)ypr[2];
-//    usb_packet.x =  (int16_t)(translation_state[1][0] * (1<<15));
-//    usb_packet.y =  (int16_t)(translation_state[1][1] * (1<<15));
-//    usb_packet.z =  (int16_t)(translation_state[1][2] * (1<<15));
+    usb_packet.yaw   = (uint16_t)ypr[0];
+    usb_packet.pitch = (uint16_t)ypr[1];
+    usb_packet.roll  = (uint16_t)ypr[2];
+//    usb_packet.x =  (uint16_t)(translation_state[1][0] * (1<<15));
+//    usb_packet.y =  (uint16_t)(translation_state[1][1] * (1<<15));
+//    usb_packet.z =  (uint16_t)(translation_state[1][2] * (1<<15));
     USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, (uint8_t*)&usb_packet, sizeof(USB_TrackerPacket_t));
 
 
