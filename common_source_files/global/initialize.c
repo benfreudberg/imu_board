@@ -14,7 +14,14 @@
 #include "leds.h"
 
 void Init(void) {
-  // set default values in case there's nothing in memory
+  /* Set default values in case there's nothing in memory.
+   *
+   * These defaults are designed to give a reading magnitude of 1g for acc
+   * and 1m for mag. m is a made-up constant for local magnetic field strength.
+   * In my case, it is 47uT, however, this value can range from 25uT up to 65uT
+   * depending on where on earth you are. Running the calibration routine sets
+   * the numbers to be correct for your particular sensors and environment.
+   */
   CAL_Data_t cal_data = {
       .acc0beta  = {0, 0, 0,
           2.4414e-004, 2.4414e-004, 2.4414e-004},
